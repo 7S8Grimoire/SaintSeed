@@ -21,6 +21,9 @@
     "discord.js": "^13.1.0",
     "dotenv": "^10.0.0",
     "i18next": "^21.2.4",
-    "log-beautify": "^1.2.0"
+    "log-beautify": "^1.2.0",
+    "mysql": "^2.18.1",
+    "mysql2": "^2.3.0",
+    "sequelize": "^6.6.5"
   }
 }
