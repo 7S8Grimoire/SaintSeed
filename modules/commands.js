@@ -1,6 +1,7 @@
 const { Collection } = require('discord.js');
 const { client } = require('./client');
 const fs = require('fs');
+const log = require('log-beautify');
 
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 const commands = [];
