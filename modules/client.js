@@ -6,6 +6,7 @@ const log = require('log-beautify');
 
 const client = new Client({ intents: [Intents.FLAGS.GUILDS] });
 exports.client = client;
+
 const rest = new REST({ version: '9' }).setToken(process.env.BOT_TOKEN);
 
 let { commands } = require('./commands');

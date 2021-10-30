@@ -1,3 +1,7 @@
 require('dotenv').config();
-const { client } = require('./modules');
-client.login(process.env.BOT_TOKEN);
+
+(async () => {
+    const { client } = await require('./modules');
+    
+    client.login(process.env.BOT_TOKEN);
+})();
