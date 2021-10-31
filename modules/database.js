@@ -52,4 +52,24 @@ const VoiceRoom = sequelize.define('VoiceRoom', {
     timestamps: false
 });
 
+const Guild = sequelize.define('Guild', {
+    // Model attributes are defined here
+    guild_id: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        primaryKey: true
+    },
+    alert_channel_id: {
+        type: DataTypes.STRING,
+        allowNull: true,
+    },
+    roulette_channel_id: {
+        type: DataTypes.STRING,
+        allowNull: true,
+    }
+}, {
+    timestamps: false
+});
+
+exports.Guild = Guild;
 exports.VoiceRoom = VoiceRoom;
