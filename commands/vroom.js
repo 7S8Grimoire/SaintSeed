@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
-const { VoiceRoom, sequelize } = require("../modules/database");
+const { VoiceRoom } = require("../modules/database");
 const i18next = require("i18next");
 
 module.exports = {
