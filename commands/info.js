@@ -8,15 +8,15 @@ module.exports = {
 		.setName('info')
 		.setDescription('Get user info'),
 	async execute(interaction) {        
-		let profile = await VoiceProfiles.show(interaction.guild.id, interaction.member.id);
         const member = interaction.member;        
+		let profile = await VoiceProfiles.show(interaction.guild.id, interaction.member.id);
         let nextLevelExperience = (10 + profile.level) * 10 * profile.level * profile.level;
         let voiceProgressInfo = `Level ${profile.level} (${profile.experience}/${nextLevelExperience})\n`;
-        let voiceExperiencePercents = Math.floor(profile.experience/nextLevelExperience*20);
+        let voiceExperiencePercents = Math.floor(profile.experience/nextLevelExperience*100);
         let voiceProgressBar = "[";
-
+        
         for (let i = 0; i < 20; i++) {
-            if (i <= voiceExperiencePercents)  {
+            if (i <= voiceExperiencePercents / 5)  {
                 voiceProgressBar += "█";
             } else {
                 voiceProgressBar += "░";                

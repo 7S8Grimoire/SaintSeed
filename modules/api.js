@@ -84,7 +84,7 @@ VoiceProfiles = {
     
     transaction: (params) => {
         api.post('transaction', params).then(response => {
-            console.log(response.data);
+            // console.log(response.data);
         }).catch(error => {
             error(err);
             // console.log(error.response);

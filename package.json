@@ -24,6 +24,7 @@
     "log-beautify": "^1.2.0",
     "mysql": "^2.18.1",
     "mysql2": "^2.3.0",
+    "random": "^3.0.6",
     "sequelize": "^6.6.5"
   }
 }

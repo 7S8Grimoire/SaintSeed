@@ -5,8 +5,9 @@ const { VoiceProfiles } = require('./api');
 let tickInterval = process.env.TICK_INTERVAL * 1000;
 
 setInterval(() => {
-    client.guilds.cache.forEach(guild => {
+    client.guilds.fetch.forEach(guild => {
         tickGuild(guild);
+        console.log(guild);
     });
 }, tickInterval);
 
