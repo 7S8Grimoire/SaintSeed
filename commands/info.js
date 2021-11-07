@@ -38,8 +38,11 @@ module.exports = {
         const displayName = interaction.member.displayName;
         const avatar = await Canvas.loadImage(interaction.user.displayAvatarURL({ format: 'jpg' }));
         const nameHeightOffset = 260;
-
-        context.fillStyle = backgroundColor;
+        // Create gradient
+        let grd = context.createLinearGradient(0, 0, 0, height);
+        grd.addColorStop(0, "#6f7278");
+        grd.addColorStop(1, backgroundColor);
+        context.fillStyle = grd;
         context.fillRect(0, 0, width, height);
 
         context.font = applyText(canvas, displayName);
