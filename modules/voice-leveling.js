@@ -5,28 +5,29 @@ const { VoiceProfiles } = require('./api');
 let tickInterval = process.env.TICK_INTERVAL * 1000;
 
 setInterval(() => {
-    client.guilds.fetch.forEach(guild => {
+    client.guilds.cache.forEach(guild => {
         tickGuild(guild);
-        console.log(guild);
+        console.log(guild.name);
     });
 }, tickInterval);
 
 async function tickGuild(guild) {
+    guild = await client.guilds.fetch(guild.id);
+    if (!guild) return;
     const checkingGuild = await Guild.findOne({ where: { guild_id: guild.id } });
     let voiceRooms = await VoiceRoom.findAll({ where: { guild_id: guild.id } });
     voiceRooms.forEach(voiceRoom => tickVoiceRoom(voiceRoom, checkingGuild));
 }
 
-function tickVoiceRoom(voiceRoom, guild) {        
-    client.channels.fetch(voiceRoom.channel_id).then(channel => {            
+function tickVoiceRoom(voiceRoom, guild) {    
+    client.channels.fetch(voiceRoom.channel_id).then(channel => {        
         channel.members.forEach(member => tickMember(guild, voiceRoom, member));
     }).catch(err => {
         console.log(err);
     });
 }
 
-async function tickMember(guild, voiceRoom, member) {
-    
+async function tickMember(guild, voiceRoom, member) {    
     let profile = await VoiceProfiles.show(member.guild.id, member.id);
     if (profile) {
         let experienceToAdd = voiceRoom.experience_per_tick;

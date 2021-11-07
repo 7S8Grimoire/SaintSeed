@@ -57,7 +57,7 @@ async function dice(interaction) {
 
     let embed = new MessageEmbed()
             .setColor(process.env.EMBED_PRIMARY_COLOR)
-            .setTitle(`${member.nickname || member.user.username} ${i18next.t('Game results')}`)
+            .setTitle(`${member.displayName} ${i18next.t('Game results')}`)
             .setDescription(`${i18next.t('My cubes')} \`${botFirstDice}\` \`${botSecondDice}\``)
             .setTimestamp();
 

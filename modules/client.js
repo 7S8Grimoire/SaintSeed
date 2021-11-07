@@ -4,7 +4,14 @@ const { Routes } = require('discord-api-types/v9');
 const log = require('log-beautify');
 
 
-const client = new Client({ intents: [Intents.FLAGS.GUILDS] });
+const client = new Client({ 
+    intents: [
+        Intents.FLAGS.GUILDS,
+        Intents.FLAGS.GUILD_MEMBERS,
+        Intents.FLAGS.GUILD_PRESENCES,
+        Intents.FLAGS.GUILD_VOICE_STATES,        
+    ]
+});
 exports.client = client;
 
 const rest = new REST({ version: '9' }).setToken(process.env.BOT_TOKEN);
