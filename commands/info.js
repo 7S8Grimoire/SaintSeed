@@ -37,18 +37,19 @@ module.exports = {
         const height = canvas.height;
         const displayName = interaction.member.displayName;
         const avatar = await Canvas.loadImage(interaction.user.displayAvatarURL({ format: 'jpg' }));
-        const nameHeightOffset = 260;
-        // Create gradient
-        let grd = context.createLinearGradient(0, 0, 0, height);
-        grd.addColorStop(0, "#6f7278");
-        grd.addColorStop(1, backgroundColor);
-        context.fillStyle = grd;
+        const nameHeightOffset = 270;
+        
+        // Create gradient        
+        let gradient = context.createRadialGradient(width / 2, 0, 0, width / 2, 0, width);
+        gradient.addColorStop(0, "#6f7278");
+        gradient.addColorStop(1, backgroundColor);
+        context.fillStyle = gradient;
         context.fillRect(0, 0, width, height);
 
         context.font = applyText(canvas, displayName);
         // context.shadowColor="black";
         // context.shadowBlur=2;
-        // context.lineWidth=5;        
+        // context.lineWidth=5;
         context.textAlign = "center";
         context.fillStyle = textColor;
         context.fillText(displayName, width / 2, nameHeightOffset);
@@ -83,41 +84,6 @@ module.exports = {
 
         const attachment = new MessageAttachment(canvas.toBuffer(), 'profile-image.png');
 	    interaction.reply({ files: [attachment] });
-        return;
-        
-
-
-        
-        // const member = interaction.member;        
-		// let profile = await VoiceProfiles.show(interaction.guild.id, interaction.member.id);
-        // let nextLevelExperience = (10 + profile.level) * 10 * profile.level * profile.level;
-        // let voiceProgressInfo = `Level ${profile.level} (${profile.experience}/${nextLevelExperience})\n`;
-        // let voiceExperiencePercents = Math.floor(profile.experience/nextLevelExperience*100);
-        // let voiceProgressBar = "[";
-        
-        // for (let i = 0; i < 20; i++) {
-        //     if (i <= voiceExperiencePercents / 5)  {
-        //         voiceProgressBar += "█";
-        //     } else {
-        //         voiceProgressBar += "░";                
-        //     }
-        // }
-        // voiceProgressBar += `] (${voiceExperiencePercents}%)\n`;
-        // voiceProgressInfo += voiceProgressBar;
-        // voiceProgressInfo += `Time spent: ${getFormatedTime(profile.time_spents.global || 0)}\n`;
-        // voiceProgressInfo += `Voice Points: ${profile.voicepoints}`;
-        
-
-        // const embed = new MessageEmbed()
-        //     .setColor('#2cbbce')
-        //     .setTitle(i18next.t('Member info'))                        
-        //     .setDescription(member.displayName)
-        //     .setThumbnail(interaction.member.displayAvatarURL())            
-        //     .addField(i18next.t('Voice'), voiceProgressInfo, true)
-        //     .setTimestamp();            
-
-        
-        // await interaction.reply({ embeds: [ embed ] });
 	},
 };
 
