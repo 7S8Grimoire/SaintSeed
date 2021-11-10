@@ -71,5 +71,38 @@ const Guild = sequelize.define('Guild', {
     timestamps: false
 });
 
+const Profile = sequelize.define('Profile', {
+    // Model attributes are defined here
+    guild_id: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        primaryKey: true
+    },
+    user_id: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        primaryKey: true
+    },
+    text_level: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue: 1,
+    },
+    text_experience: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue: 0,
+    },
+    message_count: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue: 0,
+    },
+    
+}, {
+    timestamps: false
+});
+
+exports.Profile = Profile;
 exports.Guild = Guild;
 exports.VoiceRoom = VoiceRoom;
