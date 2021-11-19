@@ -1,7 +1,8 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { MessageEmbed, MessageAttachment } = require('discord.js');
+const { api, profiles } = require('../modules/api');
+const { Profile } = require('../modules/database');
 const i18next = require('i18next');
-const { api, VoiceProfiles } = require('../modules/api');
 const Canvas = require('canvas');
 
 module.exports = {
@@ -9,10 +10,13 @@ module.exports = {
 		.setName('info')
 		.setDescription('Get user info'),
 	async execute(interaction) {
-        const profile = await VoiceProfiles.show(interaction.guild.id, interaction.member.id);
+        const profile = await profiles.show(interaction.guild.id, interaction.member.id);
+        const [_profile] = await Profile.findOrCreate({
+            where: { guild_id: interaction.guild.id, user_id: interaction.member.id }        
+        });        
         if (!profile) return;
 
-        const canvas = Canvas.createCanvas(400, 500);
+        const canvas = Canvas.createCanvas(400, 600);
 		const context = canvas.getContext('2d');
         const textColor = "#ffffff";
         const backgroundColor = "#3e4147";
@@ -39,13 +43,14 @@ module.exports = {
         const avatar = await Canvas.loadImage(interaction.user.displayAvatarURL({ format: 'jpg' }));
         const nameHeightOffset = 270;
         
-        // Create gradient        
+        // Create bacground with gradient        
         let gradient = context.createRadialGradient(width / 2, 0, 0, width / 2, 0, width);
         gradient.addColorStop(0, "#6f7278");
         gradient.addColorStop(1, backgroundColor);
         context.fillStyle = gradient;
         context.fillRect(0, 0, width, height);
 
+        // Add user name
         context.font = applyText(canvas, displayName);
         // context.shadowColor="black";
         // context.shadowBlur=2;
@@ -55,39 +60,68 @@ module.exports = {
         context.fillText(displayName, width / 2, nameHeightOffset);
         context.shadowBlur=0;
         
-        let nextLevelExperience = (10 + profile.level) * 10 * profile.level * profile.level;
-        let progress = profile.experience/nextLevelExperience*100;
+        // Draw voice level progress circle
+        let nextVoiceLevelExperience = (10 + profile.level) * 10 * profile.level * profile.level;
+        let voiceProgress = profile.experience/nextVoiceLevelExperience*100;
+        // voiceProgress = 67;
         context.beginPath();
-        context.arc(width / 2, nameHeightOffset + 100, 50, 0 * Math.PI + 2 * Math.PI, progress / 50 * Math.PI + 2 * Math.PI);
+        context.arc(width / 2, nameHeightOffset + 100, 50, 0 * Math.PI + 2 * Math.PI, voiceProgress / 50 * Math.PI + 2 * Math.PI);
         context.lineWidth = 12;
         context.strokeStyle = textColor;
-        context.stroke();
+        context.stroke();        
 
+        // Write user current voice level 
         context.font = `400 30px Roboto, Arial, sans-serif`;
         context.textAlign = "center";
         context.fillStyle = textColor;
         context.fillText(profile.level, width / 2, nameHeightOffset + 110);
         
+        // Write voice profile details
         context.font = `400 10px Roboto, Arial, sans-serif`;
-        context.fillText(`${Math.floor(progress)}%`, width / 2, nameHeightOffset + 130);
+        context.fillText(`${Math.floor(voiceProgress)}%`, width / 2, nameHeightOffset + 130);
         context.font = `400 15px Roboto, Arial, sans-serif`;
         context.textAlign = "start";
         context.fillText(getFormatedTime(profile.time_spents.global || 0), 25, nameHeightOffset + 110);
         context.textAlign = "end";
         context.fillText(`${profile.voicepoints} VP`, width-25, nameHeightOffset + 110);
 
+        // Draw text level progress circle
+        let nextTextLevelExperience = _profile.text_level*20+(_profile.text_level-1)*20;
+        let textProgress = _profile.text_experience/nextTextLevelExperience*100;
+        // textProgress = 33;
+        context.beginPath();
+        context.arc(width / 2, nameHeightOffset + 220, 50, 0 * Math.PI + 2 * Math.PI, textProgress / 50 * Math.PI + 2 * Math.PI);
+        context.lineWidth = 12;
+        context.strokeStyle = textColor;
+        context.stroke();
+
+        // Write user current voice level 
+        context.font = `400 30px Roboto, Arial, sans-serif`;
+        context.textAlign = "center";
+        context.fillStyle = textColor;
+        context.fillText(_profile.text_level, width / 2, nameHeightOffset + 230);
+
+        // Write voice profile details
+        context.font = `400 10px Roboto, Arial, sans-serif`;
+        context.fillText(`${Math.floor(voiceProgress)}%`, width / 2, nameHeightOffset + 250);
+        context.font = `400 12px Roboto, Arial, sans-serif`;
+        context.textAlign = "end";
+        context.fillText(`${_profile.message_count} messages`, width-25, nameHeightOffset + 220);
+
+        // Draw user avatar
         context.beginPath();
         context.arc(width / 2 - 100 + 100, 25 + 100, 100, 0, Math.PI * 2, true);
         context.closePath();
         context.clip();
-        context.drawImage(avatar, width / 2 - 100, 25, 200, 200);        
-
+        context.drawImage(avatar, width / 2 - 100, 25, 200, 200);
+        
+        // Send info
         const attachment = new MessageAttachment(canvas.toBuffer(), 'profile-image.png');
 	    interaction.reply({ files: [attachment] });
 	},
 };
 
-function getFormatedTime(totalSeconds) {    
+function getFormatedTime(totalSeconds) {
     let days = Math.floor(totalSeconds / (3600 * 24));
     totalSeconds %= 60 * 60 * 24;
     let hours = (`0` + (Math.floor(totalSeconds / 3600))).slice(-2);

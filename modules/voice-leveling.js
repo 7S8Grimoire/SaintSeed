@@ -1,6 +1,6 @@
 const { client } = require('./client');
 const { VoiceRoom, Guild } = require('./database');
-const { VoiceProfiles } = require('./api');
+const { profiles } = require('./api');
 
 let tickInterval = process.env.TICK_INTERVAL * 1000;
 
@@ -28,26 +28,26 @@ function tickVoiceRoom(voiceRoom, guild) {
 }
 
 async function tickMember(guild, voiceRoom, member) {    
-    let profile = await VoiceProfiles.show(member.guild.id, member.id);
+    let profile = await profiles.show(member.guild.id, member.id);
     if (profile) {
         let experienceToAdd = voiceRoom.experience_per_tick;
         
-        if (!profile.time_spents) {
-            profile.time_spents = {};
+        if (!profile.timespent) {
+            profile.timespent = {};
         }
 
-        if (!profile.time_spents.global) {
-            profile.time_spents.global = 0;
+        if (!profile.timespent.global) {
+            profile.timespent.global = 0;
         }
 
         let nextLevelExperience = (10 + profile.level) * 10 * profile.level * profile.level;
         profile.experience += experienceToAdd;
-        profile.time_spents.global += +process.env.TICK_INTERVAL;
+        profile.timespent.global += +process.env.TICK_INTERVAL;
                 
         if (profile.experience >= nextLevelExperience) {
             profile.experience -= nextLevelExperience;
             profile.level++;
-            VoiceProfiles.transaction({
+            profiles.transaction({
                 from: "self",
                 to: {
                     user_id: profile.user_id,
@@ -63,5 +63,5 @@ async function tickMember(guild, voiceRoom, member) {
             }
         }
     }
-    VoiceProfiles.update(profile);        
+    profiles.update(profile);        
 }

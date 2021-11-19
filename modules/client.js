@@ -18,6 +18,7 @@ exports.client = client;
 const rest = new REST({ version: '9' }).setToken(process.env.BOT_TOKEN);
 
 let { commands } = require('./commands');
+require('./events');
 
 client.once('ready', () => {
     log.info(`${client.user.tag} has logged in successfully!`);

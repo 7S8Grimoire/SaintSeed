@@ -1,32 +1,53 @@
 const { client } = require('./client');
-const { Profile, Guild } = require('./database');
+const { Guild } = require('./database');
+const { profiles, api } = require('../modules/api');
+const { default: i18next } = require('i18next');
 
 client.on('messageCreate', async message => {    
     if (!message.guild) return;
-    if (message.author.bot) return;    
-        
-    let [profile, created] = await Profile.findOrCreate({
-        where: { guild_id: message.guild.id, user_id: message.member.id }        
+    if (message.author.bot) return;
+    
+    let updates = {};
+    let alert_channel = null;
+    const guild_id = message.guild.id;    
+    const user_id = message.author.id;
+    const guild = await Guild.findOne({ 
+        where: {
+            guild_id: guild_id
+        }
     });
 
-    profile.message_count++;
-    profile.text_experience++;
-
-    let nextLevelExperience = profile.text_level*20+(profile.text_level-1)*20;
+    if (guild?.alert_channel_id) {
+        alert_channel = message.guild.channels.resolve(guild.alert_channel_id);        
+    }
     
-    if (profile.text_experience >= nextLevelExperience) {
-        profile.text_experience -= nextLevelExperience;
-        profile.text_level++;
-
-        const guild = await Guild.findOne({ where: { guild_id: message.guild.id } });
-        if (guild?.alert_channel_id) {
-            const channel = message.guild.channels.resolve(guild.alert_channel_id);
-            channel.send(`${message.member.user} Now at level ${profile.text_level}`);
+    let profile = await profiles.show(guild_id, user_id);
+    let text = profile.text;
+    if (!text) {
+        // profile = await profiles.createTextProfile(guild_id, user_id);
+        text = profile.text;
+        if (alert_channel) {
+            alert_channel.send(`${message.member.user} ${i18next.t('Now is a part of text system')}`);
         }
     }
-
+        
+    const nextLevelExperience = text.level*20+(text.level-1)*20;
     
-    profile.save();
+    updates.message_count = 1;
+    updates.experience = 10;    
     
-    
+    if ((text.experience + updates.experience) >= nextLevelExperience) {
+        updates.level = 1;
+        updates.experience = 0;
+        await profiles.update(guild_id, user_id, {
+            text: {
+                experience: 0
+            }
+        });
+        if (alert_channel) {
+            alert_channel.send(`${message.member.user} Now at level ${text.level+1}`);
+        }
+    }
+        
+    profiles.add(guild_id, user_id, {text: updates});
 });

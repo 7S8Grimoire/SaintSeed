@@ -1,6 +1,6 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { MessageEmbed } = require('discord.js');
-const { VoiceProfiles } = require('../modules/api');
+const { profiles } = require('../modules/api');
 const random = require('random');
 const seedrandom = require('seedrandom');
 const i18next = require('i18next');
@@ -31,7 +31,7 @@ async function dice(interaction) {
     const bet = interaction.options.getInteger("bet");
     const minimalBet = process.env.GAMBLE_DICE_MINIMAL_BET;
     const member = interaction.member;
-    let profile = await VoiceProfiles.show(interaction.guild.id, interaction.member.id);
+    let profile = await profiles.show(interaction.guild.id, interaction.member.id);
 
     if (!profile) {
         return interaction.reply(`${i18next.t('You can\'t play this game!')}`);
@@ -65,7 +65,7 @@ async function dice(interaction) {
         embed.addField(`${i18next.t('Draw')}`, `${i18next.t('Your cubes')} \`${playerFirstDice}\` \`${playerSecondDice}\``);
     } else if (playerSum > botSum) {
         embed.addField(`${i18next.t('Win')} +${bet}`, `${i18next.t('Your cubes')} \`${playerFirstDice}\` \`${playerSecondDice}\``);
-        VoiceProfiles.transaction({
+        profiles.transaction({
             from: "self",
             to: {
                 user_id: profile.user_id,
@@ -76,7 +76,7 @@ async function dice(interaction) {
         });
     } else {
         embed.addField(`${i18next.t('Lose')} -${bet}`, `${i18next.t('Your cubes')} \`${playerFirstDice}\` \`${playerSecondDice}\``);
-        VoiceProfiles.transaction({
+        profiles.transaction({
             from: {
                 user_id: profile.user_id,
                 guild_id: profile.guild_id,

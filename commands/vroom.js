@@ -8,7 +8,7 @@ module.exports = {
     .setDescription("Voice room managment")
     .addSubcommand((subcommand) =>
       subcommand
-        .setName("save")
+        .setName("make")
         .setDescription("create voice room")
         .addStringOption((option) =>
           option
@@ -35,7 +35,7 @@ module.exports = {
         )
     ),
   async execute(interaction) {
-    if (interaction.options.getSubcommand() === "save") {
+    if (interaction.options.getSubcommand() === "make") {
       save(interaction);
     } else if (interaction.options.getSubcommand() === "delete") {
       destroy(interaction);

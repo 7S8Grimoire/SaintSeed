@@ -1,5 +1,6 @@
 {
     "translation": {
-        "Pong!": "Poongo!"
+        "Pong!": "Poongo!",
+        "Make vrole": "Role '{{name}}' is not part of voice system"
     }
 }

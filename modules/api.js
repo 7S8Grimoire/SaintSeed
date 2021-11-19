@@ -7,7 +7,7 @@ api = axios.create({
     }
 });
 
-VoiceProfiles = {
+profiles = {
     create: async (guild_id, user_id) => {
         let profile = null;
         let data = {};        
@@ -20,6 +20,23 @@ VoiceProfiles = {
     
         return profile;
     },
+
+    createTextProfile: async (guild_id, user_id) => {        
+        let profile = null;
+        let data = {
+            text: {
+                level: 1,
+                experience: 0,
+                message_count: 0,
+            }
+        };        
+        await api.patch(`/profile/${guild_id}/${user_id}`, data)
+            .then(({ data }) => {                
+                profile = data;                
+            });
+        
+        return profile;
+    },
     
     show: async (guild_id, user_id) => {
         let profile = null;
@@ -29,28 +46,20 @@ VoiceProfiles = {
             profile = data;
         }).catch(async err => {
             if (err?.response?.status == 404) {            
-                profile = await VoiceProfiles.create(guild_id, user_id);
+                profile = await profiles.create(guild_id, user_id);
             } else {
                 error(err);
                 // console.error(err);
             }
         });    
-        return {        
-            user_id: profile.user_id,
-            guild_id: profile.guild_id,
-            pray: profile.pray ? profile.pray : {},
-            time_spents: profile.timespent,
-            experience: profile.experience,
-            voicepoints: profile.voicepoints,
-            level: profile.level
-        }
+        return profile;
     },
     
-    update: (data) => {
-        data.timespent = data.time_spents;        
-        api.patch(`/profile/${data.guild_id}/${data.user_id}`, data).then(response => {
+    update: (guild_id, user_id, data) => {        
+        console.log("data", data);
+        api.patch(`/profile/${guild_id}/${user_id}`, data).then(response => {
             // console.log(response.data);
-        });
+        }).catch(err => console.error(err.message));
     },
     
     addExperience: (guild_id, user_id, experience) => {
@@ -60,7 +69,7 @@ VoiceProfiles = {
         api.patch(`/profile/${guild_id}/${user_id}/add`, data);
     },
     
-    add: (guild_id, user_id, data) => {
+    add: (guild_id, user_id, data) => {        
         api.patch(`/profile/${guild_id}/${user_id}/add`, data);
     },
     
@@ -93,4 +102,4 @@ VoiceProfiles = {
 }
 
 exports.api = api;
-exports.VoiceProfiles = VoiceProfiles;
+exports.profiles = profiles;

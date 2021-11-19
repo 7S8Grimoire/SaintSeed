@@ -18,14 +18,14 @@ exports.sequelize = sequelize;
         try {
             await sequelize.authenticate();
             log.info(`Connection has been established successfully.`);
-            await sequelize.sync();
+            await sequelize.sync({ force: false });
             log.info("All models were synchronized successfully.");
             break;
         } catch (err) {
             log.error(`Unable to connect to the database: ${err}`);
             log.info(`Reconnecting in ${reconnectIntervalInSec} secs.`);
             await sleep(reconnectIntervalInSec * 1000);
-        }        
+        }
     }
 })();
 
@@ -49,7 +49,7 @@ const VoiceRoom = sequelize.define('VoiceRoom', {
         allowNull: false
     }
 }, {
-    timestamps: false
+    timestamps: true
 });
 
 const Guild = sequelize.define('Guild', {
@@ -68,7 +68,7 @@ const Guild = sequelize.define('Guild', {
         allowNull: true,
     }
 }, {
-    timestamps: false
+    timestamps: true
 });
 
 const Profile = sequelize.define('Profile', {
@@ -100,9 +100,29 @@ const Profile = sequelize.define('Profile', {
     },
     
 }, {
-    timestamps: false
+    timestamps: true
 });
 
+const VoiceRole = sequelize.define('VoiceRole', {
+
+    guild_id: {
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
+    role_id: {
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
+    bonuses: {
+        type: DataTypes.JSON,
+        allowNull: true,
+    }
+
+}, {
+    timestamps: true
+});
+
+exports.VoiceRole = VoiceRole;
 exports.Profile = Profile;
 exports.Guild = Guild;
 exports.VoiceRoom = VoiceRoom;
