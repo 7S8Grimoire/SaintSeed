@@ -30,9 +30,8 @@ module.exports = {
                 profile.pray.date = now.unix();
                 profile.pray.streak = 1;
             }
-            
-
-			await profiles.update(user_id, guild_id, profile);
+                        
+			await profiles.update(guild_id, user_id, profile);
 
             await profiles.transaction({
                 from: "self",
