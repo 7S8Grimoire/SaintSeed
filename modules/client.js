@@ -25,7 +25,9 @@ client.once('ready', () => {
     log.info(`Ready to serve on ${client.guilds.cache.size} servers, for ${client.users.cache.size} users.`);
     client.guilds.cache.forEach(guild => {
         rest.put(Routes.applicationGuildCommands(client.user.id, guild.id), { body: commands })
-            .then(() => log.info(`Successfully registered application commands (${commands.length}) for guild ${guild.name} (${guild.id}).`))
+            .then(() => {
+                log.info(`Successfully registered application commands (${commands.length}) for guild ${guild.name} (${guild.id}).`)
+            })
             .catch(log.error);
     });
 });

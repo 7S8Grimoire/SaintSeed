@@ -55,11 +55,10 @@ profiles = {
         return profile;
     },
     
-    update: (guild_id, user_id, data) => {        
-        console.log("data", data);
+    update: (guild_id, user_id, data) => {           
         api.patch(`/profile/${guild_id}/${user_id}`, data).then(response => {
             // console.log(response.data);
-        }).catch(err => console.error(err.message));
+        }).catch(err => console.error(`[update] ${err.message}`));
     },
     
     addExperience: (guild_id, user_id, experience) => {

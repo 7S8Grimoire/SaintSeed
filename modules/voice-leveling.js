@@ -7,7 +7,6 @@ let tickInterval = process.env.TICK_INTERVAL * 1000;
 setInterval(() => {
     client.guilds.cache.forEach(guild => {
         tickGuild(guild);
-        console.log(guild.name);
     });
 }, tickInterval);
 
