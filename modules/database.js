@@ -132,6 +132,10 @@ const VoiceRole = sequelize.define(
       type: DataTypes.STRING,
       allowNull: false,
     },
+    conditions: {
+      type: DataTypes.JSON,
+      allowNull: true,
+    },
     bonuses: {
       type: DataTypes.JSON,
       allowNull: true,

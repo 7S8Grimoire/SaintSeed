@@ -1,7 +1,6 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { MessageEmbed, MessageAttachment } = require('discord.js');
 const { api, profiles } = require('../modules/api');
-const { Profile } = require('../modules/database');
 const i18next = require('i18next');
 const Canvas = require('canvas');
 
