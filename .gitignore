@@ -39,3 +39,6 @@ jspm_packages
 
 # Enviroment
 .env
+
+# Project
+disabled_commands
