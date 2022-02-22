@@ -18,7 +18,6 @@ module.exports = {
 	async execute(interaction) {
 		if (interaction.options.getSubcommand() === 'user') {
 			const user = interaction.options.getUser('target');
-
 			if (user) {
 				await interaction.reply(`Username: ${user.username}\nID: ${user.id}`);
 			} else {

@@ -1,6 +1,6 @@
 const { client } = require("./client");
-const { VoiceRoom, Guild } = require("./database");
 const { profiles } = require("./api");
+const database = require('../models');
 
 let tickInterval = process.env.TICK_INTERVAL * 1000;
 
@@ -11,11 +11,12 @@ setInterval(() => {
 }, tickInterval);
 
 async function tickGuild(guild) {
-  guild = await client.guilds.fetch(guild.id);
-  if (!guild) return;
-  const checkingGuild = await Guild.findOne({ where: { guild_id: guild.id } });
-  let voiceRooms = await VoiceRoom.findAll({ where: { guild_id: guild.id } });
-  voiceRooms.forEach((voiceRoom) => tickVoiceRoom(voiceRoom, checkingGuild));
+  // guild = await client.guilds.fetch(guild.id);
+  // if (!guild) return;
+  // const currentGuild = await database.Guild.findOne({ where: { guildId: guild.id } });
+  // console.log(currentGuild);
+  // let voiceRooms = await VoiceRoom.findAll({ where: { guild_id: guild.id } });
+  // voiceRooms.forEach((voiceRoom) => tickVoiceRoom(voiceRoom, checkingGuild));
 }
 
 function tickVoiceRoom(voiceRoom, guild) {

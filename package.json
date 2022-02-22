@@ -11,7 +11,8 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "nodemon": "^2.0.13"
+    "nodemon": "^2.0.13",
+    "sequelize-cli": "^6.4.1"
   },
   "dependencies": {
     "@discordjs/builders": "^0.6.0",
@@ -27,6 +28,6 @@
     "mysql": "^2.18.1",
     "mysql2": "^2.3.0",
     "random": "^3.0.6",
-    "sequelize": "^6.6.5"
+    "sequelize": "^6.16.2"
   }
 }

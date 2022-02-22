@@ -28,6 +28,8 @@ client.once('ready', () => {
             .then(() => {
                 log.info(`Successfully registered application commands (${commands.length}) for guild ${guild.name} (${guild.id}).`)
             })
-            .catch(log.error);
+            .catch(error => {
+                console.error(error)
+            });
     });
 });

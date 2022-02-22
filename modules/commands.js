@@ -9,8 +9,12 @@ client.commands = new Collection();
 
 
 for (const file of commandFiles) {
-	const command = require(`../commands/${file}`);    
-	commands.push(command.data.toJSON());
+	const command = require(`../commands/${file}`);
+	if (command.raw) {
+		commands.push(command.data);
+	} else {
+		commands.push(command.data.toJSON());
+	}	
 	client.commands.set(command.data.name, command);
 }
 
