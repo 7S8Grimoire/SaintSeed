@@ -1,91 +1,56 @@
-const { SlashCommandBuilder } = require("@discordjs/builders");
-const { VoiceRoom } = require("../modules/database");
-const i18next = require("i18next");
+const { SlashCommandBuilder } = require('@discordjs/builders');
+const i18next = require('i18next');
+const database = require('../models');
+const { Constants } = require('discord.js');
 
 module.exports = {
-  data: new SlashCommandBuilder()
-    .setName("vroom")
-    .setDescription("Voice room managment")
-    .addSubcommand((subcommand) =>
-      subcommand
-        .setName("make")
-        .setDescription("create voice room")
-        .addStringOption((option) =>
-          option
-            .setName("channel_id")
-            .setDescription("The future  voice room")
-            .setRequired(true)
-        )
-        .addIntegerOption((option) =>
-          option
-            .setName("experience")
-            .setDescription("Experience count per tick")
-            .setRequired(true)
-        )
-    )
-    .addSubcommand((subcommand) =>
-      subcommand
-        .setName("delete")
-        .setDescription("delete voice room")
-        .addStringOption((option) =>
-          option
-            .setName("channel_id")
-            .setDescription("The voice room id")
-            .setRequired(true)
-        )
-    ),
-  async execute(interaction) {
-    if (interaction.options.getSubcommand() === "make") {
-      save(interaction);
-    } else if (interaction.options.getSubcommand() === "delete") {
-      destroy(interaction);
-    }
-  },
+	// data: new SlashCommandBuilder()
+	// 	.setName('dev')
+	// 	.setDescription('Command for testing')
+	// 	.addChannelOption(option => option
+	// 		.setName('channel')
+	// 		.setDescription('Select a channel')
+	// 		.setRequired(true)
+	// 	)
+	// 	,
+	raw: true,
+	data: {
+		name: "vroom",
+		description: "Voice room management",
+		options: [
+			{
+				name: 'channel',
+				description: "Select a channel",
+				required: true,
+				type: Constants.ApplicationCommandOptionTypes.CHANNEL,
+				channel_types: [ Constants.ChannelTypes.GUILD_VOICE ]
+			},
+
+			{
+				name: 'experience',
+				description: "Experience per tick",
+				required: true,
+				type: Constants.ApplicationCommandOptionTypes.NUMBER,				
+			}
+		]
+	},
+	async execute(interaction) {
+		const [ voiceRoom, created ] = await database.VoiceRoom.findOrCreate({
+			where: {
+				guild_id: interaction.guild.id,
+				channel_id: interaction.options.getChannel("channel").id,
+			},
+			defaults: {
+				xp_per_tick: interaction.options.getNumber("experience"),
+			}
+		});
+
+		if (created) {
+			interaction.reply("Created new voice room!");
+		} else {
+			interaction.reply("Updated voice room!");
+		}
+		
+
+	},
 };
-
-async function save(interaction) {
-  const guild = interaction.guild;
-  const channel = guild.channels.resolve(
-    interaction.options.getString("channel_id")
-  );
-  const experience = interaction.options.getInteger("experience");
-  if (!channel) return interaction.reply(`Failed to create voice room`);
-
-  try {
-    let voiceRoom = await VoiceRoom.findOne({
-      where: { guild_id: guild.id, channel_id: channel.id },
-    });
-    if (voiceRoom === null) {
-      await VoiceRoom.create({
-        channel_id: channel.id,
-        guild_id: guild.id,
-        experience_per_tick: experience,
-      });
-      interaction.reply(`Voice room ${channel.name} successfully created`);
-    } else {
-      await voiceRoom.update({
-        channel_id: channel.id,
-        guild_id: guild.id,
-        experience_per_tick: experience,
-      });
-      interaction.reply(`Voice room ${channel.name} successfully updated`);
-    }
-  } catch (error) {
-    interaction.reply(error.message);
-  }
-}
-
-async function destroy(interaction) {
-  const guild = interaction.guild;
-  const channel = guild.channels.resolve(
-    interaction.options.getString("channel_id")
-  );
-  try {
-    await VoiceRoom.destroy({
-      where: { guild_id: guild.id, channel_id: channel.id },
-    });
-    interaction.reply(`Voice room ${channel.name} successfully deleted`);
-  } catch (error) {
-    interaction.reply(error.message);
-  }
-}

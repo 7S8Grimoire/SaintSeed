@@ -1,35 +1,35 @@
 'use strict';
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('VoiceRooms', {
-      roomId: {
+    await queryInterface.createTable('voice_rooms', {
+      channel_id: {
         primaryKey: true,
         allowNull: false,
         type: Sequelize.STRING
       },
-      guildId: {
+      guild_id: {
         primaryKey: true,
         allowNull: false,
         type: Sequelize.STRING
       },
-      xpPerTick: {
+      xp_per_tick: {
         type: Sequelize.FLOAT
       },
-      ownerId: {
+      owner_id: {
         allowNull: true,
         type: Sequelize.STRING
       },
-      createdAt: {
+      created_at: {
         allowNull: false,
         type: Sequelize.DATE
       },
-      updatedAt: {
+      updated_at: {
         allowNull: false,
         type: Sequelize.DATE
       }
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('VoiceRooms');
+    await queryInterface.dropTable('voice_rooms');
   }
 };

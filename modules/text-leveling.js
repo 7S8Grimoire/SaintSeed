@@ -1,5 +1,5 @@
 const { client } = require('./client');
-const { Guild } = require('./database');
+// const { Guild } = require('./database');
 const { profiles, api } = require('../modules/api');
 const { default: i18next } = require('i18next');
 

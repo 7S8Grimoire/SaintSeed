@@ -3,7 +3,7 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class VoiceLevel extends Model {
+  class VoiceRoom extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -13,20 +13,22 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
     }
   }
-  VoiceLevel.init({
-    roomId: {
+  VoiceRoom.init({
+    channel_id: {
       primaryKey: true,
+      allowNull: false,
       type: DataTypes.STRING
     },
-    guildId: {
+    guild_id: {
       primaryKey: true,
+      allowNull: false,
       type: DataTypes.STRING
     },
-    conditions: DataTypes.JSON,
-    bonuses: DataTypes.JSON
-  }, {
+    xp_per_tick: DataTypes.FLOAT,
+    owner_id: DataTypes.STRING
+  }, {    
     sequelize,
-    modelName: 'VoiceLevel',
+    modelName: 'VoiceRoom',
   });
-  return VoiceLevel;
+  return VoiceRoom;
 };

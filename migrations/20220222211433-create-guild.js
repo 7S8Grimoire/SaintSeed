@@ -1,34 +1,34 @@
 'use strict';
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Guilds', {      
-      guildId: {
+    await queryInterface.createTable('guilds', {      
+      guild_id: {
         primaryKey: true,
         type: Sequelize.STRING
       },
-      alertChannelId: {
+      alert_channel_id: {
         allowNull: true,
         type: Sequelize.STRING
       },
-      rouletteChannelId: {
+      roulette_channel_id: {
         allowNull: true,
         type: Sequelize.STRING
       },
-      commandSpamChannelId: {
+      command_spam_channel_id: {
         allowNull: true,
         type: Sequelize.STRING
       },
-      createdAt: {
+      created_at: {
         allowNull: false,
         type: Sequelize.DATE
       },
-      updatedAt: {
+      updated_at: {
         allowNull: false,
         type: Sequelize.DATE
       }
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Guilds');
+    await queryInterface.dropTable('guilds');
   }
 };

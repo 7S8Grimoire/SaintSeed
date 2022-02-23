@@ -14,23 +14,22 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Guild.init({
-    guildId: {
+    guild_id: {
       primaryKey: true,
       type: DataTypes.STRING
     },
-    alertChannelId: {
+    alert_channel_id: {
       allowNull: true,
       type: DataTypes.STRING
     },
-    rouletteChannelId: {
+    roulette_channel_id: {
       allowNull: true,
       type: DataTypes.STRING
     },
-    commandSpamChannelId: {
+    command_spam_channel_id: {
       allowNull: true,
       type: DataTypes.STRING
     },
-    commandSpamChannelId: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'Guild',
