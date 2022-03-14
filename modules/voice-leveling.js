@@ -23,26 +23,26 @@ async function tickGuild(guild) {
 function tickVoiceRoom(currentGuild, voiceRoom) {
   voiceRoom.channel = currentGuild.guild.channels.cache.get(voiceRoom.channel_id);
   if (voiceRoom.channel) {
+    let promises = [];
     voiceRoom.channel.members.forEach(member => {
-      tickMember(currentGuild, voiceRoom, member);
+      promises.push(Promise.resolve(tickMember(currentGuild, voiceRoom, member)));
     });
-  }
-  // client.channels
-  //   .fetch(voiceRoom.channel_id)
-  //   .then((channel) => {
-  //     channel.members.forEach((member) => tickMember(guild, voiceRoom, member));
-  //   })
-  //   .catch((err) => {
-  //     console.log(err);
-  //   });
+    Promise.all(promises).then((tickedMembers) => {
+      if (tickedMembers.length) {
+        profiles.bulkAdd(tickedMembers);
+      }
+    });
+  }  
 }
 
 async function tickMember(currentGuild, voiceRoom, member) {
-  // console.log(`${member.guild.name} | ${voiceRoom.channel.name} | ${member.displayName} | +${voiceRoom.xp_per_tick}`);
   let data = {};
   let profile = await profiles.show(member.guild.id, member.id);
 
   if (!profile) return;
+
+  data.user_id = member.id;
+  data.guild_id = member.guild.id;
 
   const experienceToAdd = voiceRoom.xp_per_tick;
   const nextLevelExperience = (10 + profile.level) * 10 * profile.level * profile.level;
@@ -77,5 +77,5 @@ async function tickMember(currentGuild, voiceRoom, member) {
     }
   }
 
-  profiles.add(profile.guild_id, profile.user_id, data);
+  return data;
 }

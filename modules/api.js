@@ -72,6 +72,10 @@ profiles = {
         api.patch(`/profile/${guild_id}/${user_id}/add`, data);
     },
     
+    bulkAdd: (data) => {        
+        api.patch(`/profile/add`, data);
+    },
+    
     levelTop: async (guild_id) => {
         let top = [];
         top = await api.get(`/profile/${guild_id}/level-top`);
