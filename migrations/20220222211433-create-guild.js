@@ -6,18 +6,6 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.STRING
       },
-      alert_channel_id: {
-        allowNull: true,
-        type: Sequelize.STRING
-      },
-      roulette_channel_id: {
-        allowNull: true,
-        type: Sequelize.STRING
-      },
-      command_spam_channel_id: {
-        allowNull: true,
-        type: Sequelize.STRING
-      },
       created_at: {
         allowNull: false,
         type: Sequelize.DATE

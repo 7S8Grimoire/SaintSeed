@@ -2,6 +2,7 @@ const { Collection } = require('discord.js');
 const { client } = require('./client');
 const fs = require('fs');
 const log = require('log-beautify');
+const database = require('../models');
 
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 const commands = [];
@@ -10,6 +11,7 @@ client.commands = new Collection();
 
 for (const file of commandFiles) {
 	const command = require(`../commands/${file}`);
+
 	if (command.raw) {
 		commands.push(command.data);
 	} else {
@@ -24,6 +26,20 @@ client.on('interactionCreate', async interaction => {
 	const command = client.commands.get(interaction.commandName);
 
 	if (!command) return;
+	if (command.categories?.length) {
+		const commandAvailableChannels = await database.GuildChannel.findAll({ 
+			where: { 				
+				guild_id: interaction.guildId,
+				category: command.categories
+			} 
+		});
+		const isCategorized = commandAvailableChannels.some(channel => channel.channel_id == interaction.channelId);
+		const channelsReferences = commandAvailableChannels.map(channel => `<#${channel.channel_id}>`);
+		if (!isCategorized) {
+			await interaction.reply({ content: `Go here: ${channelsReferences.join(' or ')}`, ephemeral: true });
+			return;
+		}
+	}
 
 	try {
 		await command.execute(interaction);

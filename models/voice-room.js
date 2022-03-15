@@ -1,7 +1,5 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
+"use strict";
+const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class VoiceRoom extends Model {
     /**
@@ -13,22 +11,25 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
     }
   }
-  VoiceRoom.init({
-    channel_id: {
-      primaryKey: true,
-      allowNull: false,
-      type: DataTypes.STRING
+  VoiceRoom.init(
+    {
+      channel_id: {
+        primaryKey: true,
+        allowNull: false,
+        type: DataTypes.STRING,
+      },
+      guild_id: {
+        primaryKey: true,
+        allowNull: false,
+        type: DataTypes.STRING,
+      },
+      xp_per_tick: DataTypes.FLOAT,
+      owner_id: DataTypes.STRING,
     },
-    guild_id: {
-      primaryKey: true,
-      allowNull: false,
-      type: DataTypes.STRING
-    },
-    xp_per_tick: DataTypes.FLOAT,
-    owner_id: DataTypes.STRING
-  }, {    
-    sequelize,
-    modelName: 'VoiceRoom',
-  });
+    {
+      sequelize,
+      modelName: "VoiceRoom",
+    }
+  );
   return VoiceRoom;
 };

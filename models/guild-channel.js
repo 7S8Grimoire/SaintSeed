@@ -1,19 +1,14 @@
 "use strict";
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
-  class VoiceRole extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
+  class GuildChannel extends Model {
     static associate(models) {
       // define association here
     }
   }
-  VoiceRole.init(
+  GuildChannel.init(
     {
-      role_id: {
+      channel_id: {
         primaryKey: true,
         type: DataTypes.STRING,
       },
@@ -21,13 +16,14 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
         type: DataTypes.STRING,
       },
-      conditions: DataTypes.JSON,
-      bonuses: DataTypes.JSON,
+      category: {
+        type: DataTypes.STRING,
+      }
     },
     {
       sequelize,
-      modelName: "VoiceRole",
+      modelName: "GuildChannel",
     }
   );
-  return VoiceRole;
+  return GuildChannel;
 };
