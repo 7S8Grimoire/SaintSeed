@@ -26,11 +26,11 @@ client.on('interactionCreate', async interaction => {
 	const command = client.commands.get(interaction.commandName);
 
 	if (!command) return;
-	if (command.categories?.length) {
+	if (command.channelCategories?.length) {
 		const commandAvailableChannels = await database.GuildChannel.findAll({ 
 			where: { 				
 				guild_id: interaction.guildId,
-				category: command.categories
+				category: command.channelCategories
 			} 
 		});
 		const isCategorized = commandAvailableChannels.some(channel => channel.channel_id == interaction.channelId);

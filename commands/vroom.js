@@ -43,11 +43,14 @@ module.exports = {
 			defaults: {
 				xp_per_tick: interaction.options.getNumber("experience"),
 			}
-		});
+		});	
+		
 
 		if (created) {
 			interaction.reply("Created new voice room!");
 		} else {
+			voiceRoom.xp_per_tick = interaction.options.getNumber("experience");
+			voiceRoom.save();
 			interaction.reply("Updated voice room!");
 		}
 		

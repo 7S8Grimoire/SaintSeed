@@ -15,17 +15,17 @@ async function tickGuild(guild) {
   if (!currentGuild) return;
 
   currentGuild.guild = guild;
-  let voiceRooms = await database.VoiceRoom.findAll({ where: { guild_id: guild.id } });
+  let vRooms = await database.VoiceRoom.findAll({ where: { guild_id: guild.id } });
 
-  voiceRooms.forEach((voiceRoom) => tickVoiceRoom(currentGuild, voiceRoom));
+  vRooms.forEach((vRoom) => tickVoiceRoom(currentGuild, vRoom));
 }
 
-function tickVoiceRoom(currentGuild, voiceRoom) {
-  voiceRoom.channel = currentGuild.guild.channels.cache.get(voiceRoom.channel_id);
-  if (voiceRoom.channel) {
+function tickVoiceRoom(currentGuild, vRoom) {
+  vRoom.channel = currentGuild.guild.channels.cache.get(vRoom.channel_id);
+  if (vRoom.channel) {
     let promises = [];
-    voiceRoom.channel.members.forEach(member => {
-      promises.push(Promise.resolve(tickMember(currentGuild, voiceRoom, member)));
+    vRoom.channel.members.forEach(member => {
+      promises.push(Promise.resolve(tickMember(currentGuild, vRoom, member)));
     });
     Promise.all(promises).then((tickedMembers) => {
       if (tickedMembers.length) {
@@ -35,7 +35,7 @@ function tickVoiceRoom(currentGuild, voiceRoom) {
   }  
 }
 
-async function tickMember(currentGuild, voiceRoom, member) {
+async function tickMember(currentGuild, vRoom, member) {
   let data = {};
   let profile = await profiles.show(member.guild.id, member.id);
 
@@ -44,7 +44,7 @@ async function tickMember(currentGuild, voiceRoom, member) {
   data.user_id = member.id;
   data.guild_id = member.guild.id;
 
-  const experienceToAdd = voiceRoom.xp_per_tick;
+  const experienceToAdd = vRoom.xp_per_tick;
   const nextLevelExperience = (10 + profile.level) * 10 * profile.level * profile.level;
 
 
@@ -55,7 +55,7 @@ async function tickMember(currentGuild, voiceRoom, member) {
 
   
   profile.experience += experienceToAdd;
-
+  
   // level up
   if (profile.experience >= nextLevelExperience) {
     data.level = 1;
@@ -69,7 +69,9 @@ async function tickMember(currentGuild, voiceRoom, member) {
       },
       amount: 10 * ++profile.level,
       reason: `level up`,
-    });
+    });    
+
+    processVoiceRole(member, profile.level);
 
     if (currentGuild?.alert_channel_id) {
       const channel = member.guild.channels.resolve(currentGuild.alert_channel_id);
@@ -78,4 +80,18 @@ async function tickMember(currentGuild, voiceRoom, member) {
   }
 
   return data;
+}
+
+async function processVoiceRole(member, level) {
+  let vRoles = await database.VoiceRole.findAll({ where: { guild_id: member.guild.id } });
+  let vRolesToAdd = vRoles.filter(vRole => vRole.conditions?.addOnLevel == level);
+  let vRolesToRemove = vRoles.filter(vRole => vRole.conditions?.removeOnLevel == level);
+  
+  vRolesToAdd.forEach(vRole => {
+    member.roles.add(vRole.role_id);
+  });
+
+  vRolesToRemove.forEach(vRole => {
+    member.roles.remove(vRole.role_id);
+  });
 }

@@ -48,8 +48,7 @@ profiles = {
             if (err?.response?.status == 404) {            
                 profile = await profiles.create(guild_id, user_id);
             } else {
-                error(err);
-                // console.error(err);
+                console.error(err);
             }
         });    
         return profile;
