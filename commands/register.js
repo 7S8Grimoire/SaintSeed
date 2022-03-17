@@ -15,9 +15,11 @@ module.exports = {
 		});
 
 		if (created) {
-			interaction.reply("Your guild has been registered successfully!");
+			// interaction.reply(i18next.t("Your guild has been registered successfully!"));
+			interaction.reply(i18next.t('guild.registered.success'));
 		} else {
-			interaction.reply("Your guild is already registered!");
+			// interaction.reply(i18next.t("Your guild is already registered!"));
+			interaction.reply(i18next.t('guild.registered.already'));
 		}
 	},
 };

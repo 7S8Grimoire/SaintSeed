@@ -40,13 +40,12 @@ module.exports = {
                     guild_id: guild_id,
                 },
                 amount: (pray + profile.pray.streak*10),
-                reason: `pray | streak ${profile.pray.streak}`,
+                reason: `Praying | streak ${profile.pray.streak}`,
             });
-			return interaction.reply(`Держи ${pray} и ${profile.pray.streak*10} за ежедневные молитвы!`);
+            const streak = profile.pray.streak*10;
+			return interaction.reply(i18next.t('pray.success', { pray, streak }));
 		} else {
-            return interaction.reply(i18next.t('You already got yours today.'));
+            return interaction.reply(i18next.t('pray.alreadyGot'));
         }
-
-		await interaction.reply(i18next.t('Sorry can\'t hear you'));
 	},
 };

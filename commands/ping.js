@@ -7,6 +7,6 @@ module.exports = {
 		.setDescription('Replies with Pong!'),
 	channelCategories: ["commands"],
 	async execute(interaction) {
-		await interaction.reply(i18next.t('Pong!'));
+		await interaction.reply(i18next.t('ping'));
 	},
 };
