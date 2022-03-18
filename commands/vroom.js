@@ -1,19 +1,13 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
+const { Constants } = require('discord.js');
+const { MessageEmbed, MessageButton } = require('discord.js');
+
 const i18next = require('i18next');
 const database = require('../models');
-const { Constants } = require('discord.js');
-const { MessageEmbed } = require('discord.js');
+// const paginationEmbed = require('discordjs-button-pagination');
+const { paginationEmbed } = require('../modules/helpers');
 
 module.exports = {
-	// data: new SlashCommandBuilder()
-	// 	.setName('dev')
-	// 	.setDescription('Command for testing')
-	// 	.addChannelOption(option => option
-	// 		.setName('channel')
-	// 		.setDescription('Select a channel')
-	// 		.setRequired(true)
-	// 	)
-	// 	,
 	raw: true,
 	data: {
 		name: "vroom",
@@ -42,7 +36,7 @@ module.exports = {
 
 			{
 				name: 'register',
-				description: "Register a new or update existing voice room",				
+				description: "Register a new or update existing voice room",
 				type: Constants.ApplicationCommandOptionTypes.SUB_COMMAND,
 				options: [
 					{
@@ -64,7 +58,7 @@ module.exports = {
 
 			{
 				name: 'remove',
-				description: "Removes a voice room",				
+				description: "Removes a voice room",
 				type: Constants.ApplicationCommandOptionTypes.SUB_COMMAND,
 				options: [
 					{
@@ -80,11 +74,12 @@ module.exports = {
 	},
 	async execute(interaction) {
 		const subCommand = interaction.options.getSubcommand();
+		const guild = interaction.guild;
 
 		if (subCommand === 'register') {
 			const [ voiceRoom, created ] = await database.VoiceRoom.findOrCreate({
 				where: {
-					guild_id: interaction.guild.id,
+					guild_id: guild.id,
 					channel_id: interaction.options.getChannel("channel").id,
 				},
 				defaults: {
@@ -120,10 +115,12 @@ module.exports = {
 				.setColor(process.env.EMBED_PRIMARY_COLOR)
 				.setTitle(channel.name);
 
-			vRoomEmbed.addField('Visitor count', channel.members.size.toString());
+			vRoomEmbed.addField(i18next.t('vRoom.visitorCount'), channel.members.size.toString());
 
 			if (vRoom) {
-				vRoomEmbed.addField('Experience per tick', vRoom.xp_per_tick.toString());
+				vRoomEmbed.addField(i18next.t('vRoom.xpPerTick'), vRoom.xp_per_tick.toString());
+			} else {
+				vRoomEmbed.setDescription(i18next.t('vRoom.notPartOfSystem'));
 			}
 			
 				
@@ -132,7 +129,56 @@ module.exports = {
 		}
 
 		if (subCommand === 'list') {
-			interaction.reply(i18next.t('tipo list'));
+			
+			const vRooms = await database.VoiceRoom.findAll({ where: { guild_id: guild.id  }, raw: true,
+				nest: true, });
+
+			if (!vRooms.length) return interaction.reply(i18next.t('vRoom.listEmpty'));
+
+			const channels = guild.channels.cache.filter(channel => {
+				const vRoom = vRooms.find(vRoom => vRoom.channel_id == channel.id);
+				if (vRoom) {
+					channel.vRoom = vRoom;
+					return true;
+				}
+			});
+						
+			let seqNumber = 1;
+			let pageInfo = "";
+			let pages = [];
+
+			const previousBtn = new MessageButton()
+				.setCustomId('previousbtn')
+				.setLabel(i18next.t('pagination.prev'))
+				.setStyle('SECONDARY');
+
+			const nextBtn = new MessageButton()
+				.setCustomId('nextbtn')
+				.setLabel(i18next.t('pagination.next'))
+				.setStyle('SECONDARY');
+			
+			channels.forEach(channel => {
+				pageInfo += `[${seqNumber++}] ${channel.name} | XP: ${channel.vRoom.xp_per_tick} \n`;
+				if (seqNumber > 10) {
+					const vRoomEmbed = new MessageEmbed()
+						.setColor(process.env.EMBED_PRIMARY_COLOR)
+						.setTitle(i18next.t('vRoom.listTitle'))
+						.setDescription(pageInfo);
+					pages.push(vRoomEmbed);
+					seqNumber = 1;
+					pageInfo = "";
+				}
+			});
+
+			if (pageInfo) {
+				const vRoomEmbed = new MessageEmbed()
+						.setColor(process.env.EMBED_PRIMARY_COLOR)
+						.setTitle(i18next.t('vRoom.listTitle'))
+						.setDescription(pageInfo);
+				pages.push(vRoomEmbed);
+			}
+			
+			paginationEmbed(interaction, pages, [previousBtn, nextBtn]);
 		}
 
 	},

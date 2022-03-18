@@ -4,10 +4,12 @@ const database = require('../models');
 
 let tickInterval = process.env.TICK_INTERVAL * 1000;
 
-setInterval(() => {  
-  client.guilds.cache.forEach((guild) => {
-    tickGuild(guild);
-  });
+setInterval(() => {
+  if (database.isConnected) {
+    client.guilds.cache.forEach((guild) => {
+      tickGuild(guild);
+    });
+  }
 }, tickInterval);
 
 async function tickGuild(guild) {

@@ -1,5 +1,7 @@
 "use strict";
 
+const { sleep } = require('../modules/helpers');
+
 const fs = require("fs");
 const path = require("path");
 const Sequelize = require("sequelize");
@@ -9,6 +11,8 @@ const config = require(__dirname + "/../config/config.json")[env];
 const db = {};
 
 let sequelize;
+db.isConnected = false;
+
 if (config.use_env_variable) {
   sequelize = new Sequelize(process.env[config.use_env_variable], config);
 } else {
@@ -19,6 +23,22 @@ if (config.use_env_variable) {
     config
   );
 }
+
+(async () => {
+  const reconnectIntervalInSec = process.env.DB_RECONNECT_INTERVAL;
+  while(true) {
+      try {
+          await sequelize.authenticate();
+          console.log(`Connection has been established successfully.`);
+          db.isConnected = true;
+          break;
+      } catch (err) {
+          console.error(`Unable to connect to the database:, ${err}`);
+          console.log(`Reconnecting in ${ reconnectIntervalInSec } secs.`);
+          await sleep(reconnectIntervalInSec * 1000);
+      }        
+  }
+})();
 
 fs.readdirSync(__dirname)
   .filter((file) => {
