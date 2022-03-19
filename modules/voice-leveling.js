@@ -78,10 +78,20 @@ async function tickMember(currentGuild, vRoom, member) {
 
     processVoiceRole(member, profile.level);
 
-    if (currentGuild?.alert_channel_id) {
-      const channel = member.guild.channels.resolve(currentGuild.alert_channel_id);
-      channel.send(`${member.user} Now at level ${profile.level}`);
-    }
+    const aChannels = await database.GuildChannel.findAll({
+      where: {
+        guild_id: member.guild.id,
+        category: 'alert',
+      }
+    });
+
+    // Alert channels processing
+    aChannels.forEach(aChannel => {
+      const channel = member.guild.channels.cache.get(aChannel.channel_id);
+      if (channel) {
+        channel.send(`${member.user} Now at level ${profile.level}`);
+      }
+    });
   }
 
   return data;

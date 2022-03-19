@@ -3,33 +3,6 @@ const database = require("../models");
 const i18next = require("i18next");
 const { Constants } = require("discord.js");
 
-// let data = new SlashCommandBuilder()
-// .setName('register')
-// .setDescription('Register guild in system')
-// .addSubcommand(subcommand => subcommand
-// 	.setName('server')
-// 	.setDescription('register a server to system')
-// )
-// .addSubcommand(subcommand => subcommand
-// 	.setName('text-channel')
-// 	.setDescription('register a text channel to specific type')
-// 	.addChannelOption(option => option
-// 		.setName('channel')
-// 		.setDescription('Choose a channel')
-// 		.setRequired(true)
-// 	)
-// 	.addStringOption(option => option
-// 		.setName('channel-category')
-// 		.setDescription('Choose a channel type')
-// 		.setRequired(true)
-// 		.addChoice('alert', 'alert')
-// 		.addChoice('roulette', 'roulette')
-// 		.addChoice('command spam', 'command_spam')
-// 	)
-
-// ).toJSON();
-
-// console.log(JSON.stringify(data));
 module.exports = {
 	raw: true,
   data: {
