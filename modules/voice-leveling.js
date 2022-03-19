@@ -42,6 +42,9 @@ async function tickMember(currentGuild, vRoom, member) {
   let profile = await profiles.show(member.guild.id, member.id);
 
   if (!profile) return;
+  if (profile.isNew) {
+    processVoiceRole(member, profile.level);
+  }
 
   data.user_id = member.id;
   data.guild_id = member.guild.id;

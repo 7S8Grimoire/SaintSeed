@@ -12,6 +12,7 @@ module.exports = {
         type: Sequelize.DataTypes.STRING,
       },
       category: {
+        primaryKey: true,
         type: Sequelize.DataTypes.STRING,
       },
       created_at: {

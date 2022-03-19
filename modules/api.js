@@ -68,11 +68,11 @@ profiles = {
     },
     
     add: (guild_id, user_id, data) => {        
-        api.patch(`/profile/${guild_id}/${user_id}/add`, data);
+        api.patch(`/profile/${guild_id}/${user_id}/add`, data).catch(err => {});
     },
     
     bulkAdd: (data) => {        
-        api.patch(`/profile/add`, data);
+        api.patch(`/profile/add`, data).catch(err => {});
     },
     
     levelTop: async (guild_id) => {

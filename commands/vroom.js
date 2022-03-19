@@ -7,6 +7,17 @@ const database = require('../models');
 // const paginationEmbed = require('discordjs-button-pagination');
 const { paginationEmbed } = require('../modules/helpers');
 
+const previousBtn = new MessageButton()
+	.setCustomId('previousbtn')
+	.setLabel(i18next.t('pagination.prev'))
+	.setStyle('SECONDARY');
+
+const nextBtn = new MessageButton()
+	.setCustomId('nextbtn')
+	.setLabel(i18next.t('pagination.next'))
+	.setStyle('SECONDARY');
+			
+
 module.exports = {
 	raw: true,
 	data: {
@@ -130,53 +141,31 @@ module.exports = {
 
 		if (subCommand === 'list') {
 			
-			const vRooms = await database.VoiceRoom.findAll({ where: { guild_id: guild.id  }, raw: true,
-				nest: true, });
+			const vRooms = await database.VoiceRoom.findAll({ where: { guild_id: guild.id  }, raw: true, nest: true, });
 
-			if (!vRooms.length) return interaction.reply(i18next.t('vRoom.listEmpty'));
-
-			const channels = guild.channels.cache.filter(channel => {
-				const vRoom = vRooms.find(vRoom => vRoom.channel_id == channel.id);
-				if (vRoom) {
-					channel.vRoom = vRoom;
-					return true;
-				}
-			});
-						
-			let seqNumber = 1;
+			let pageItemCount = 1;
 			let pageInfo = "";
 			let pages = [];
 
-			const previousBtn = new MessageButton()
-				.setCustomId('previousbtn')
-				.setLabel(i18next.t('pagination.prev'))
-				.setStyle('SECONDARY');
+			vRooms.forEach((vRoom, index) => {
+				const channel = guild.channels.cache.get(vRoom.channel_id);
+				if (!channel) return;
 
-			const nextBtn = new MessageButton()
-				.setCustomId('nextbtn')
-				.setLabel(i18next.t('pagination.next'))
-				.setStyle('SECONDARY');
-			
-			channels.forEach(channel => {
-				pageInfo += `[${seqNumber++}] ${channel.name} | XP: ${channel.vRoom.xp_per_tick} \n`;
-				if (seqNumber > 10) {
+				pageInfo += `[**${index+1}**] ${channel.name} | XP: ${vRoom.xp_per_tick} \n`;
+				pageItemCount++;
+
+				if (pageItemCount > 10 || index == vRooms.length-1) {
 					const vRoomEmbed = new MessageEmbed()
 						.setColor(process.env.EMBED_PRIMARY_COLOR)
 						.setTitle(i18next.t('vRoom.listTitle'))
 						.setDescription(pageInfo);
 					pages.push(vRoomEmbed);
-					seqNumber = 1;
+					pageItemCount = 1;
 					pageInfo = "";
 				}
 			});
 
-			if (pageInfo) {
-				const vRoomEmbed = new MessageEmbed()
-						.setColor(process.env.EMBED_PRIMARY_COLOR)
-						.setTitle(i18next.t('vRoom.listTitle'))
-						.setDescription(pageInfo);
-				pages.push(vRoomEmbed);
-			}
+			if (!pages.length) return interaction.reply(i18next.t('vRoom.listEmpty'));
 			
 			paginationEmbed(interaction, pages, [previousBtn, nextBtn]);
 		}

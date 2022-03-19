@@ -7,6 +7,16 @@ const database = require('../models');
 
 const { paginationEmbed } = require('../modules/helpers');
 
+const previousBtn = new MessageButton()
+	.setCustomId('previousbtn')
+	.setLabel(i18next.t('pagination.prev'))
+	.setStyle('SECONDARY');
+
+const nextBtn = new MessageButton()
+	.setCustomId('nextbtn')
+	.setLabel(i18next.t('pagination.next'))
+	.setStyle('SECONDARY');
+
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('vrole')
@@ -82,53 +92,31 @@ module.exports = {
 				},
 			});
 
-			if (!vRoles.length) return interaction.reply(i18next.t('vRole.listEmpty'));
-
-			const roles = guild.roles.cache.filter(role => {
-				const vRole = vRoles.find(vRole => vRole.role_id == role.id);
-				if (vRole) {
-					role.vRole = vRole;
-					return true;
-				}
-			});
-
-			let seqNumber = 1;
+			let pageItemCount = 1;
 			let pageInfo = "";
 			let pages = [];
 
-			const previousBtn = new MessageButton()
-				.setCustomId('previousbtn')
-				.setLabel(i18next.t('pagination.prev'))
-				.setStyle('SECONDARY');
+			vRoles.forEach((vRole, index) => {
+				const role = guild.roles.cache.get(vRole.role_id);
+				if (!role) return;
 
-			const nextBtn = new MessageButton()
-				.setCustomId('nextbtn')
-				.setLabel(i18next.t('pagination.next'))
-				.setStyle('SECONDARY');
-			
+				pageInfo += `[**${index+1}**] ${role.name} | **+(${vRole.conditions?.addOnLevel})** **-(${vRole.conditions?.removeOnLevel ?? '🚫'})** \n`;
+				pageItemCount++
 
-
-				roles.forEach(role => {
-				pageInfo += `[${seqNumber++}] ${role.name} | +(${role.vRole.conditions?.addOnLevel}) -(${role.vRole.conditions?.removeOnLevel ?? 'n'}) \n`;
-				if (seqNumber > 10) {
+				if (pageItemCount > 10 || index == vRoles.length-1) {
 					const vRoleEmbed = new MessageEmbed()
 						.setColor(process.env.EMBED_PRIMARY_COLOR)
 						.setTitle(i18next.t('vRole.listTitle'))
 						.setDescription(pageInfo);
 					pages.push(vRoleEmbed);
-					seqNumber = 1;
+					pageItemCount = 1;
 					pageInfo = "";
 				}
+
 			});
 
-			if (pageInfo) {
-				const vRoleEmbed = new MessageEmbed()
-						.setColor(process.env.EMBED_PRIMARY_COLOR)
-						.setTitle(i18next.t('vRovRoleom.listTitle'))
-						.setDescription(pageInfo);
-				pages.push(vRoleEmbed);
-			}
-			
+			if (!pages.length) return interaction.reply(i18next.t('vRole.listEmpty'));
+
 			paginationEmbed(interaction, pages, [previousBtn, nextBtn]);
 		}
 	},

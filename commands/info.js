@@ -87,6 +87,13 @@ module.exports = {
         context.textAlign = "end";
         context.fillText(`${profile.voicepoints} VP`, width-25, nameHeightOffset + 110);
 
+        if (!profile.text) {
+            profile.text = {
+                level: 1,
+                experience: 0
+            };
+        }
+        
         // Draw text level progress circle
         let nextTextLevelExperience = (profile.text.level*(profile.text.level/2+0.5))*10;
         let textProgress = profile.text.experience/nextTextLevelExperience*100;
