@@ -5,6 +5,7 @@ const i18next = require('i18next');
 const Canvas = require('canvas');
 
 module.exports = {
+    categories: ["command_spam", "roulette"],
 	data: new SlashCommandBuilder()
 		.setName('info')
 		.setDescription('Get user info'),
@@ -87,8 +88,15 @@ module.exports = {
         context.textAlign = "end";
         context.fillText(`${profile.voicepoints} VP`, width-25, nameHeightOffset + 110);
 
+        if (!profile.text) {
+            profile.text = {
+                level: 1,
+                experience: 0
+            };
+        }
+        
         // Draw text level progress circle
-        let nextTextLevelExperience = profile.text.level*20+(profile.text.level-1)*20;
+        let nextTextLevelExperience = (profile.text.level*(profile.text.level/2+0.5))*10;
         let textProgress = profile.text.experience/nextTextLevelExperience*100;
         // textProgress = 33;
             // Draw progress bacground circle
@@ -112,7 +120,7 @@ module.exports = {
 
         // Write voice profile details
         context.font = `400 10px Roboto, Arial, sans-serif`;
-        context.fillText(`${Math.floor(voiceProgress)}%`, width / 2, nameHeightOffset + 250);
+        context.fillText(`${Math.floor(textProgress)}%`, width / 2, nameHeightOffset + 250);
         context.font = `400 12px Roboto, Arial, sans-serif`;
         context.textAlign = "end";
         context.fillText(`${profile.text.message_count} messages`, width-25, nameHeightOffset + 220);

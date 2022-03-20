@@ -48,8 +48,7 @@ profiles = {
             if (err?.response?.status == 404) {            
                 profile = await profiles.create(guild_id, user_id);
             } else {
-                error(err);
-                // console.error(err);
+                console.error(err);
             }
         });    
         return profile;
@@ -69,7 +68,11 @@ profiles = {
     },
     
     add: (guild_id, user_id, data) => {        
-        api.patch(`/profile/${guild_id}/${user_id}/add`, data);
+        api.patch(`/profile/${guild_id}/${user_id}/add`, data).catch(err => {});
+    },
+    
+    bulkAdd: (data) => {        
+        api.patch(`/profile/add`, data).catch(err => {});
     },
     
     levelTop: async (guild_id) => {
@@ -94,7 +97,7 @@ profiles = {
         api.post('transaction', params).then(response => {
             // console.log(response.data);
         }).catch(error => {
-            error(err);
+            error(error);
             // console.log(error.response);
         });
     },

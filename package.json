@@ -11,15 +11,18 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "nodemon": "^2.0.13"
+    "nodemon": "^2.0.13",
+    "sequelize-cli": "^6.4.1"
   },
   "dependencies": {
     "@discordjs/builders": "^0.6.0",
     "@discordjs/rest": "^0.1.0-canary.0",
     "axios": "^0.22.0",
     "canvas": "^2.8.0",
+    "chance": "^1.1.8",
     "discord-api-types": "^0.23.1",
     "discord.js": "^13.2.0",
+    "discordjs-button-pagination": "^3.0.1",
     "dotenv": "^10.0.0",
     "i18next": "^21.2.4",
     "log-beautify": "^1.2.0",
@@ -27,6 +30,6 @@
     "mysql": "^2.18.1",
     "mysql2": "^2.3.0",
     "random": "^3.0.6",
-    "sequelize": "^6.6.5"
+    "sequelize": "^6.16.2"
   }
 }

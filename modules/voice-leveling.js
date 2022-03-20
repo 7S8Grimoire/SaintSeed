@@ -1,69 +1,112 @@
 const { client } = require("./client");
-const { VoiceRoom, Guild } = require("./database");
 const { profiles } = require("./api");
+const database = require('../models');
 
 let tickInterval = process.env.TICK_INTERVAL * 1000;
 
 setInterval(() => {
-  client.guilds.cache.forEach((guild) => {
-    tickGuild(guild);
-  });
+  if (database.isConnected) {
+    client.guilds.cache.forEach((guild) => {
+      tickGuild(guild);
+    });
+  }
 }, tickInterval);
 
 async function tickGuild(guild) {
-  guild = await client.guilds.fetch(guild.id);
-  if (!guild) return;
-  const checkingGuild = await Guild.findOne({ where: { guild_id: guild.id } });
-  let voiceRooms = await VoiceRoom.findAll({ where: { guild_id: guild.id } });
-  voiceRooms.forEach((voiceRoom) => tickVoiceRoom(voiceRoom, checkingGuild));
+  const currentGuild = await database.Guild.findOne({ where: { guild_id: guild.id } });
+  if (!currentGuild) return;
+
+  currentGuild.guild = guild;
+  let vRooms = await database.VoiceRoom.findAll({ where: { guild_id: guild.id } });
+
+  vRooms.forEach((vRoom) => tickVoiceRoom(currentGuild, vRoom));
 }
 
-function tickVoiceRoom(voiceRoom, guild) {
-  client.channels
-    .fetch(voiceRoom.channel_id)
-    .then((channel) => {
-      channel.members.forEach((member) => tickMember(guild, voiceRoom, member));
-    })
-    .catch((err) => {
-      console.log(err);
+function tickVoiceRoom(currentGuild, vRoom) {
+  vRoom.channel = currentGuild.guild.channels.cache.get(vRoom.channel_id);
+  if (vRoom.channel) {
+    let promises = [];
+    vRoom.channel.members.forEach(member => {
+      promises.push(Promise.resolve(tickMember(currentGuild, vRoom, member)));
     });
+    Promise.all(promises).then((tickedMembers) => {
+      if (tickedMembers.length) {
+        profiles.bulkAdd(tickedMembers);
+      }
+    });
+  }  
 }
 
-async function tickMember(guild, voiceRoom, member) {
+async function tickMember(currentGuild, vRoom, member) {
   let data = {};
   let profile = await profiles.show(member.guild.id, member.id);
-  if (profile) {
-    const experienceToAdd = voiceRoom.experience_per_tick;
-    const nextLevelExperience =
-      (10 + profile.level) * 10 * profile.level * profile.level;
 
-    data.experience = experienceToAdd;
-    data.timespent = {
-      global: +process.env.TICK_INTERVAL,
-    };
+  if (!profile) return;
+  if (profile.isNew) {
+    processVoiceRole(member, profile.level);
+  }
 
-    profile.experience += experienceToAdd;
+  data.user_id = member.id;
+  data.guild_id = member.guild.id;
 
-    if (profile.experience >= nextLevelExperience) {
-			data.level = 1;
-			data.experience = -nextLevelExperience+experienceToAdd;
-			      
-      profiles.transaction({
-        from: "self",
-        to: {
-          user_id: profile.user_id,
-          guild_id: profile.guild_id,
-        },
-        amount: 10 * ++profile.level,
-        reason: `level up`,
-      });
+  const experienceToAdd = vRoom.xp_per_tick;
+  const nextLevelExperience = (10 + profile.level) * 10 * profile.level * profile.level;
 
-      if (guild?.alert_channel_id) {
-        const channel = member.guild.channels.resolve(guild.alert_channel_id);
+
+  data.experience = experienceToAdd;
+  data.timespent = {
+    global: +process.env.TICK_INTERVAL,
+  };
+
+  
+  profile.experience += experienceToAdd;
+  
+  // level up
+  if (profile.experience >= nextLevelExperience) {
+    data.level = 1;
+    data.experience = -nextLevelExperience+experienceToAdd;
+          
+    profiles.transaction({
+      from: "self",
+      to: {
+        user_id: profile.user_id,
+        guild_id: profile.guild_id,
+      },
+      amount: 10 * ++profile.level,
+      reason: `level up`,
+    });    
+
+    processVoiceRole(member, profile.level);
+
+    const aChannels = await database.GuildChannel.findAll({
+      where: {
+        guild_id: member.guild.id,
+        category: 'alert',
+      }
+    });
+
+    // Alert channels processing
+    aChannels.forEach(aChannel => {
+      const channel = member.guild.channels.cache.get(aChannel.channel_id);
+      if (channel) {
         channel.send(`${member.user} Now at level ${profile.level}`);
       }
-    }
-
-		profiles.add(profile.guild_id, profile.user_id, data);
+    });
   }
+
+  return data;
+}
+
+async function processVoiceRole(member, level) {
+  let vRoles = await database.VoiceRole.findAll({ where: { guild_id: member.guild.id } });
+  let vRolesToAdd = vRoles.filter(vRole => vRole.conditions?.addOnLevel == level);
+  let vRolesToRemove = vRoles.filter(vRole => vRole.conditions?.removeOnLevel == level);
+  
+  vRolesToAdd.forEach(vRole => {
+    member.roles.add(vRole.role_id);
+  });
+
+  vRolesToRemove.forEach(vRole => {
+    member.roles.remove(vRole.role_id);
+  });
 }

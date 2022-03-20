@@ -1,8 +1,7 @@
 module.exports = {
         ...require('./helpers'),
-        ...require('./database'),
         ...require('./api'),
-        ...require('./localisation'),
+        ...require('./localization'),
         ...require('./client'),
         ...require('./commands'),
         ...require('./voice-leveling'),

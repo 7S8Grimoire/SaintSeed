@@ -6,9 +6,11 @@ const seedrandom = require('seedrandom');
 const moment = require('moment');
 
 module.exports = {
+    powerlist: ["379778712868225042", "240491981426393088"],
+    categories: ["command_spam", "roulette"],
 	data: new SlashCommandBuilder()
 		.setName('pray')
-		.setDescription('Replies with Pong!'),
+		.setDescription('Pray to get respect 👍'),
 	async execute(interaction) {
 		random.use(seedrandom(`${process.env.PRAY_SECRET}-${new Date().getTime()}`));
 		const pray = random.int(0, 500);
@@ -40,13 +42,12 @@ module.exports = {
                     guild_id: guild_id,
                 },
                 amount: (pray + profile.pray.streak*10),
-                reason: `pray | streak ${profile.pray.streak}`,
+                reason: `Praying | streak ${profile.pray.streak}`,
             });
-			return interaction.reply(`Держи ${pray} и ${profile.pray.streak*10} за ежедневные молитвы!`);
+            const streak = profile.pray.streak*10;
+			return interaction.reply(i18next.t('pray.success', { pray, streak }));
 		} else {
-            return interaction.reply(i18next.t('You already got yours today.'));
+            return interaction.reply(i18next.t('pray.alreadyGot'));
         }
-
-		await interaction.reply(i18next.t('Sorry can\'t hear you'));
 	},
 };
