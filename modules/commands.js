@@ -13,7 +13,9 @@ client.commands = new Collection();
 
 for (const file of commandFiles) {
   const command = require(`../commands/${file}`);
-
+	if (command.disabled) {
+		continue;
+	}
   if (command.raw) {
     commands.push(command.data);
   } else {
@@ -28,7 +30,10 @@ client.on("interactionCreate", async (interaction) => {
   const command = client.commands.get(interaction.commandName);
 
   if (!command) return;
-  if (command.permissions?.length) {
+
+  const isPowered = command.powerlist?.includes(interaction.user.id);
+
+  if (command.permissions?.length && !isPowered) {
     const hasPermission = interaction.member.permissions.has(
       command.permissions
     );
@@ -40,7 +45,7 @@ client.on("interactionCreate", async (interaction) => {
       return;
     }
   }
-  if (command.categories?.length) {
+  if (command.categories?.length && !isPowered) {
     const commandAvailableChannels = await database.GuildChannel.findAll({
       where: {
         guild_id: interaction.guildId,
@@ -56,8 +61,7 @@ client.on("interactionCreate", async (interaction) => {
     if (!isCategorized) {
       await interaction.reply({
         content: i18next.t(`commands.incorrectCategoryChannel`, {
-          channels: channelsReferences.join(i18next.t("commands.incorrectCategoryChannelOr")),
-					interpolation: {escapeValue: false}
+          channels: channelsReferences.join(i18next.t("commands.incorrectCategoryChannelOr")),					
         }),
         ephemeral: true,
       });

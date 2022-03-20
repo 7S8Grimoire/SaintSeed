@@ -2,6 +2,7 @@ const { SlashCommandBuilder } = require('@discordjs/builders');
 const i18next = require('i18next');
 
 module.exports = {
+	disabled: true,
 	data: new SlashCommandBuilder()
 		.setName('echo')
 		.setDescription('Return info!')

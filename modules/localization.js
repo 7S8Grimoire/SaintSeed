@@ -6,5 +6,8 @@ i18next.init({
     resources: {
         en: require('../locales/en.json'),
         ru: require('../locales/ru.json'),
+    },
+    interpolation: { 
+        escapeValue: false,
     }
 });

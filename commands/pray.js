@@ -6,10 +6,11 @@ const seedrandom = require('seedrandom');
 const moment = require('moment');
 
 module.exports = {
+    powerlist: ["379778712868225042", "240491981426393088"],
     categories: ["command_spam", "roulette"],
 	data: new SlashCommandBuilder()
 		.setName('pray')
-		.setDescription('Replies with Pong!'),
+		.setDescription('Pray to get respect 👍'),
 	async execute(interaction) {
 		random.use(seedrandom(`${process.env.PRAY_SECRET}-${new Date().getTime()}`));
 		const pray = random.int(0, 500);
