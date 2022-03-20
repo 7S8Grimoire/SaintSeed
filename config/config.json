@@ -1,9 +1,6 @@
 {
   "development": {
-    "username": "root",
-    "password": null,
-    "database": "seven_saints_dev",
-    "host": "127.0.0.1",
+    "use_env_variable": "DB_URL",
     "dialect": "mysql",
     "define": {
       "timestamps": true,
@@ -14,10 +11,7 @@
     }
   },
   "test": {
-    "username": "root",
-    "password": null,
-    "database": "seven_saints_test",
-    "host": "127.0.0.1",
+    "use_env_variable": "DB_TEST_URL",
     "dialect": "mysql",
     "define": {
       "timestamps": true,
@@ -28,10 +22,7 @@
     }
   },
   "production": {
-    "username": "root",
-    "password": null,
-    "database": "seven_saints",
-    "host": "127.0.0.1",
+    "use_env_variable": "DB_URL",
     "dialect": "mysql",
     "define": {
       "timestamps": true,
