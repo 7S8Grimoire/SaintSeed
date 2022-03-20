@@ -1,6 +1,6 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { Constants } = require('discord.js');
-const { MessageEmbed, MessageButton } = require('discord.js');
+const { MessageEmbed, MessageButton, Permissions } = require('discord.js');
 
 const i18next = require('i18next');
 const database = require('../models');
@@ -20,6 +20,8 @@ const nextBtn = new MessageButton()
 
 module.exports = {
 	raw: true,
+	permissions: [ Permissions.FLAGS.ADMINISTRATOR ],
+	categories: ["command_spam"],
 	data: {
 		name: "vroom",
 		description: "Voice room management",

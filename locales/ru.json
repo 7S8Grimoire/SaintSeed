@@ -10,14 +10,20 @@
 
     "guild": {
       "registered": {
-        "success": "Сервер успешно зарегистрированно!",
-        "already": "Сервер уже зарегистрированно!"
+        "success": "Сервер успешно зарегистрирован!",
+        "already": "Сервер уже зарегистрирован!"
       },
 
       "textChannel": {
         "registered": "Текстовому каналу присвоена категория **{{category}}**",
         "removed":  "Текстовый канал убран из категории **{{category}}**"
       }
+    },
+
+    "commands": {
+      "incorrectCategoryChannel": "Не-не мимо... иди сюда: {{channels}}",
+      "incorrectCategoryChannelOr": "или",
+      "noPermissions": "У тебя нет прав, плебей..."
     },
 
     "vRoom": {

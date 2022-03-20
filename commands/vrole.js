@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const { MessageEmbed, MessageButton } = require('discord.js');
+const { MessageEmbed, MessageButton, Permissions } = require('discord.js');
 const { Constants } = require('discord.js');
 
 const i18next = require('i18next');
@@ -18,6 +18,8 @@ const nextBtn = new MessageButton()
 	.setStyle('SECONDARY');
 
 module.exports = {
+	permissions: [ Permissions.FLAGS.ADMINISTRATOR ],
+	categories: ["command_spam"],
 	data: new SlashCommandBuilder()
 		.setName('vrole')
 		.setDescription('Voice role management')

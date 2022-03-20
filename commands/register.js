@@ -1,10 +1,13 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
 const database = require("../models");
 const i18next = require("i18next");
-const { Constants } = require("discord.js");
+const { Constants, Permissions } = require("discord.js");
 
 module.exports = {
 	raw: true,
+  // ["command_spam", "alert", "roulette"],
+  permissions: [ Permissions.FLAGS.ADMINISTRATOR ],
+  categories: ["command_spam"],
   data: {
     name: "register",
     description: "Register guild in system",

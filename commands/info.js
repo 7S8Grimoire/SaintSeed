@@ -5,6 +5,7 @@ const i18next = require('i18next');
 const Canvas = require('canvas');
 
 module.exports = {
+    categories: ["command_spam", "roulette"],
 	data: new SlashCommandBuilder()
 		.setName('info')
 		.setDescription('Get user info'),

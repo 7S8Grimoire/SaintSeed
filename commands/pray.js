@@ -6,6 +6,7 @@ const seedrandom = require('seedrandom');
 const moment = require('moment');
 
 module.exports = {
+    categories: ["command_spam", "roulette"],
 	data: new SlashCommandBuilder()
 		.setName('pray')
 		.setDescription('Replies with Pong!'),
