@@ -91,7 +91,7 @@ async function dice(interaction) {
     .addField(i18next.t("dice.bet"), `${bet} VP`)
     .setAuthor(
       author.displayName,
-      interaction.user.displayAvatarURL({ format: "jpg" })
+      interaction.user.displayAvatarURL({ format: "png" })
     )
     .setDescription(
       i18next.t("dice.embedDescription", {

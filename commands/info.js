@@ -8,10 +8,19 @@ module.exports = {
     categories: ["command_spam", "roulette"],
 	data: new SlashCommandBuilder()
 		.setName('info')
-		.setDescription('Get user info'),
+		.setDescription('Get user info')
+        .addUserOption(option => option
+            .setName('user')
+            .setDescription('Select a user which info you need to see')
+            .setRequired(false)
+        ),
 	async execute(interaction) {
-        const profile = await profiles.show(interaction.guild.id, interaction.member.id);            
+        const user = interaction.options.getUser('user') ?? interaction.user;
+        const profile = await profiles.show(interaction.guild.id, user.id);
+        
         if (!profile) return;
+
+        const member = interaction.guild.members.cache.get(user.id);
 
         const canvas = Canvas.createCanvas(400, 600);
 		const context = canvas.getContext('2d');
@@ -36,8 +45,8 @@ module.exports = {
 
         const width = canvas.width;
         const height = canvas.height;
-        const displayName = interaction.member.displayName;
-        const avatar = await Canvas.loadImage(interaction.user.displayAvatarURL({ format: 'jpg' }));
+        const displayName = member.displayName;
+        const avatar = await Canvas.loadImage(user.displayAvatarURL({ format: 'png' }));
         const nameHeightOffset = 270;
         
         // Create bacground with gradient        
@@ -82,6 +91,7 @@ module.exports = {
         // Write voice profile details
         context.font = `400 10px Roboto, Arial, sans-serif`;
         context.fillText(`${Math.floor(voiceProgress)}%`, width / 2, nameHeightOffset + 130);
+        context.fillText('Voice', width / 2, nameHeightOffset + 75);
         context.font = `400 15px Roboto, Arial, sans-serif`;
         context.textAlign = "start";        
         context.fillText(getFormatedTime(profile.timespent.global || 0), 25, nameHeightOffset + 110);
@@ -91,7 +101,8 @@ module.exports = {
         if (!profile.text) {
             profile.text = {
                 level: 1,
-                experience: 0
+                experience: 0,
+                message_count: 0,
             };
         }
         
@@ -121,6 +132,7 @@ module.exports = {
         // Write voice profile details
         context.font = `400 10px Roboto, Arial, sans-serif`;
         context.fillText(`${Math.floor(textProgress)}%`, width / 2, nameHeightOffset + 250);
+        context.fillText('Text', width / 2, nameHeightOffset + 195);
         context.font = `400 12px Roboto, Arial, sans-serif`;
         context.textAlign = "end";
         context.fillText(`${profile.text.message_count} messages`, width-25, nameHeightOffset + 220);
