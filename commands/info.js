@@ -92,7 +92,7 @@ module.exports = {
         context.font = `400 10px Roboto, Arial, sans-serif`;
         context.fillText(`${Math.floor(voiceProgress)}%`, width / 2, nameHeightOffset + 130);
         context.fillText('Voice', width / 2, nameHeightOffset + 75);
-        context.font = `400 15px Roboto, Arial, sans-serif`;
+        context.font = `400 12px Roboto, Arial, sans-serif`;
         context.textAlign = "start";        
         context.fillText(getFormatedTime(profile.timespent.global || 0), 25, nameHeightOffset + 110);
         context.textAlign = "end";
