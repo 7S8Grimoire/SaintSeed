@@ -48,28 +48,30 @@ client.on("interactionCreate", async (interaction) => {
       return;
     }
   }
-  const commandAvailableChannels = await database.GuildChannel.findAll({
-    where: {
-      guild_id: interaction.guildId,
-      category: command.categories,
-    },
-  });
-  if (command.categories?.length && commandAvailableChannels.length && !hasPowerPermissions) {
-    const isCategorized = commandAvailableChannels.some(
-      (channel) => channel.channel_id == interaction.channelId
-    );
-    const channelsReferences = commandAvailableChannels.map(
-      (channel) => `<#${channel.channel_id}>`
-    );
-    if (!isCategorized) {
-      await interaction.reply({
-        content: i18next.t(`commands.incorrectCategoryChannel`, {
-          channels: channelsReferences.join(i18next.t("commands.incorrectCategoryChannelOr")),					
-        }),
-        ephemeral: true,
-      });
-      // await interaction.reply({ content: `Go here: ${channelsReferences.join(' or ')}`, ephemeral: true });
-      return;
+  if (command.categories?.length && !hasPowerPermissions) {
+    const commandAvailableChannels = await database.GuildChannel.findAll({
+      where: {
+        guild_id: interaction.guildId,
+        category: command.categories,
+      },
+    });
+    if (commandAvailableChannels.length) {
+      const isCategorized = commandAvailableChannels.some(
+        (channel) => channel.channel_id == interaction.channelId
+      );
+      const channelsReferences = commandAvailableChannels.map(
+        (channel) => `<#${channel.channel_id}>`
+      );
+      if (!isCategorized) {
+        await interaction.reply({
+          content: i18next.t(`commands.incorrectCategoryChannel`, {
+            channels: channelsReferences.join(i18next.t("commands.incorrectCategoryChannelOr")),					
+          }),
+          ephemeral: true,
+        });
+        // await interaction.reply({ content: `Go here: ${channelsReferences.join(' or ')}`, ephemeral: true });
+        return;
+      }
     }
   }
 
