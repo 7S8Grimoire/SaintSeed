@@ -32,8 +32,11 @@ client.on("interactionCreate", async (interaction) => {
   if (!command) return;
 
   const isPowered = command.powerlist?.includes(interaction.user.id);
+  const isOwner = process.env.BOT_OWNERS.split(',').includes(interaction.user.id);
 
-  if (command.permissions?.length && !isPowered) {
+  const hasPowerPermissions = isPowered || isOwner;
+
+  if (command.permissions?.length && !hasPowerPermissions) {
     const hasPermission = interaction.member.permissions.has(
       command.permissions
     );
@@ -45,13 +48,13 @@ client.on("interactionCreate", async (interaction) => {
       return;
     }
   }
-  if (command.categories?.length && !isPowered) {
-    const commandAvailableChannels = await database.GuildChannel.findAll({
-      where: {
-        guild_id: interaction.guildId,
-        category: command.categories,
-      },
-    });
+  const commandAvailableChannels = await database.GuildChannel.findAll({
+    where: {
+      guild_id: interaction.guildId,
+      category: command.categories,
+    },
+  });
+  if (command.categories?.length && commandAvailableChannels.length && !hasPowerPermissions) {
     const isCategorized = commandAvailableChannels.some(
       (channel) => channel.channel_id == interaction.channelId
     );

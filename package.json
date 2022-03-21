@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "node ./index.js",
-    "dev": "nodemon ./index.js"
+    "dev": "nodemon ./index.js",
+    "migrate": "env $(cat .env | grep -v ^# | xargs) sequelize db:migrate"
   },
   "keywords": [],
   "author": "",
