@@ -1,6 +1,7 @@
 const { client } = require("./client");
 const { profiles } = require("./api");
 const database = require('../models');
+const i18next = require("i18next");
 
 let tickInterval = process.env.TICK_INTERVAL * 1000;
 
@@ -89,7 +90,7 @@ async function tickMember(currentGuild, vRoom, member) {
     aChannels.forEach(aChannel => {
       const channel = member.guild.channels.cache.get(aChannel.channel_id);
       if (channel) {
-        channel.send(`${member.user} Now at level ${profile.level}`);
+        channel.send(i18next.t(`level.up`, { who: member.user, level: profile.level }));
       }
     });
   }

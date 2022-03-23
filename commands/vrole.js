@@ -64,14 +64,13 @@ module.exports = {
 					role_id: interaction.options.getRole('role').id,
 				},
 			});
-			
+			vRole.conditions = {};
+			vRole.conditions.addOnLevel = interaction.options.getNumber("add-on-level");
+			vRole.conditions.removeOnLevel = interaction.options.getNumber("remove-on-level");
+			vRole.save();
 			if (created) {
 				interaction.reply(i18next.t('vRole.created'));
-			} else {
-				vRole.conditions = {};
-				vRole.conditions.addOnLevel = interaction.options.getNumber("add-on-level");
-				vRole.conditions.removeOnLevel = interaction.options.getNumber("remove-on-level");
-				vRole.save();
+			} else {				
 				interaction.reply(i18next.t('vRole.updated'));
 			}
 		}
@@ -102,7 +101,7 @@ module.exports = {
 				const role = guild.roles.cache.get(vRole.role_id);
 				if (!role) return;
 
-				pageInfo += `[**${index+1}**] ${role.name} | **+(${vRole.conditions?.addOnLevel})** **-(${vRole.conditions?.removeOnLevel ?? '🚫'})** \n`;
+				pageInfo += `[**${index+1}**] ${role.name} | **+(${vRole.conditions?.addOnLevel})** **-(${vRole.conditions?.removeOnLevel ?? '⛔︎'})** \n`;
 				pageItemCount++
 
 				if (pageItemCount > 10 || index == vRoles.length-1) {
