@@ -7,15 +7,7 @@ const database = require('../models');
 
 const { paginationEmbed } = require('../modules/helpers');
 
-const previousBtn = new MessageButton()
-	.setCustomId('previousbtn')
-	.setLabel(i18next.t('pagination.prev'))
-	.setStyle('SECONDARY');
 
-const nextBtn = new MessageButton()
-	.setCustomId('nextbtn')
-	.setLabel(i18next.t('pagination.next'))
-	.setStyle('SECONDARY');
 
 module.exports = {
 	permissions: [ Permissions.FLAGS.ADMINISTRATOR ],
@@ -118,7 +110,7 @@ module.exports = {
 
 			if (!pages.length) return interaction.reply(i18next.t('vRole.listEmpty'));
 
-			paginationEmbed(interaction, pages, [previousBtn, nextBtn]);
+			paginationEmbed(interaction, pages);
 		}
 	},
 };

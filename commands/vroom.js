@@ -169,7 +169,7 @@ module.exports = {
 
 			if (!pages.length) return interaction.reply(i18next.t('vRoom.listEmpty'));
 			
-			paginationEmbed(interaction, pages, [previousBtn, nextBtn]);
+			paginationEmbed(interaction, pages);
 		}
 
 	},
