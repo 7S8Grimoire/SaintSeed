@@ -5,7 +5,7 @@ const { profiles } = require("../modules/api");
 const moment = require("moment");
 
 module.exports = {
-  // categories: ["command_spam", "roulette"],
+  categories: ["command_spam", "roulette"],
   data: new SlashCommandBuilder()
     .setName("top")
     .setDescription("Gives the top 5 list")
