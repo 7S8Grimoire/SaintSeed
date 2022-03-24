@@ -75,21 +75,18 @@ profiles = {
         api.patch(`/profile/add`, data).catch(err => {});
     },
     
-    levelTop: async (guild_id) => {
-        let top = [];
-        top = await api.get(`/profile/${guild_id}/level-top`);
+    levelTop: async (guild_id) => {        
+        const top = await api.get(`/profile/${guild_id}/top`, { params: { by: "levels", amount: 0 } });
         return top.data ?? [];
     },
     
     timeTop: async (guild_id) => {
-        let top = [];
-        top = await api.get(`/profile/${guild_id}/time-top`);
+        const top = await api.get(`/profile/${guild_id}/top`, { params: { by: "time", amount: 0 } });
         return top.data ?? [];
     },
     
-    pointsTop: async (guild_id) => {
-        let top = [];
-        top = await api.get(`/profile/${guild_id}/points-top`);
+    pointsTop: async (guild_id) => {        
+        const top = await api.get(`/profile/${guild_id}/top`, { params: { by: "points", amount: 0 } });
         return top.data ?? [];
     },
     

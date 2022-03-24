@@ -74,6 +74,19 @@
     "pagination": {
       "next": "▶️",
       "prev": "◀️"
+    },
+
+    "time": {
+      "format": "{{days}}д. {{hours}}:{{minutes}}:{{seconds}}"
+    },
+
+    "top": {
+      "voiceTimeRow": "Просидел: {{timeString}}",
+      "voiceLevelRow": "Уровень {{level}} ({{experience}} XP) ({{percentage}}%)",
+      "voicepointsRow": "{{voicepoints}} VP",
+      "voiceLevel": "Топ 5 фармил",
+      "voiceTime": "Топ 5 просидевших штаны",
+      "voicepoints": "Топ 5 моржей"
     }
   }
 }

@@ -31,7 +31,8 @@ const i18next = require("i18next");
     const nextBtn = new MessageButton()
       .setCustomId(`nextBtn-${timestamp}`)
       .setLabel(i18next.t('pagination.next'))
-      .setStyle('SECONDARY');
+      .setStyle('SECONDARY')
+      .setDisabled(pages.length == 1);
 
     const row = new MessageActionRow().addComponents(previousBtn, nextBtn);
 
