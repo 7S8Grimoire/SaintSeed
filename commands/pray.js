@@ -19,7 +19,7 @@ module.exports = {
 
 		var profile = await profiles.show(guild_id, user_id);
 
-		const now = moment().utc(null);
+		const now = moment();
 		const last_pray_date = moment.unix(profile.pray.date);
 		const diffDays = now.diff(last_pray_date, 'day', true);
         
