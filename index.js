@@ -1,10 +1,8 @@
-require('dotenv').config();
+import dotenv from "dotenv";
+import { client } from "./modules/client.js";
 
-global._ = require('lodash');
-global.botLaunchedAt = require("moment")().format("YYYY-MM-DD HH:mm:ss");
+dotenv.config();
 
 (async () => {
-    const { client } = await require('./modules');
-    
-    client.login(process.env.BOT_TOKEN);
+  client.login(process.env.BOT_TOKEN);
 })();

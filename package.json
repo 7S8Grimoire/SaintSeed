@@ -8,6 +8,7 @@
     "dev": "nodemon ./index.js",
     "migrate": "env $(cat .env | grep -v ^# | xargs) sequelize db:migrate"
   },
+  "type": "module",
   "keywords": [],
   "author": "",
   "license": "ISC",
