@@ -54,6 +54,18 @@ profiles = {
         return profile;
     },
     
+    showGuildTree: async (guild_id) => {
+        let profileTree = null;
+        let params = {};
+        await api.get(`/profile/${guild_id}?view=tree`, {params})
+        .then(({ data }) => {
+            profileTree = data;
+        }).catch(async err => {
+            console.error(err);
+        });    
+        return profileTree;
+    },
+
     update: (guild_id, user_id, data) => {           
         api.patch(`/profile/${guild_id}/${user_id}`, data).then(response => {
             // console.log(response.data);

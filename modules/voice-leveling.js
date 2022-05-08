@@ -20,15 +20,17 @@ async function tickGuild(guild) {
   currentGuild.guild = guild;
   let vRooms = await database.VoiceRoom.findAll({ where: { guild_id: guild.id } });
 
-  vRooms.forEach((vRoom) => tickVoiceRoom(currentGuild, vRoom));
+  let profileTree = await profiles.showGuildTree(guild.id);
+
+  vRooms.forEach((vRoom) => tickVoiceRoom(currentGuild, vRoom, profileTree));
 }
 
-function tickVoiceRoom(currentGuild, vRoom) {
+function tickVoiceRoom(currentGuild, vRoom, profileTree) {
   vRoom.channel = currentGuild.guild.channels.cache.get(vRoom.channel_id);
   if (vRoom.channel) {
     let promises = [];
     vRoom.channel.members.forEach(member => {
-      promises.push(Promise.resolve(tickMember(currentGuild, vRoom, member)));
+      promises.push(Promise.resolve(tickMember(currentGuild, vRoom, member, profileTree)));
     });
     Promise.all(promises).then((tickedMembers) => {
       if (tickedMembers.length) {
@@ -38,9 +40,10 @@ function tickVoiceRoom(currentGuild, vRoom) {
   }  
 }
 
-async function tickMember(currentGuild, vRoom, member) {
+async function tickMember(currentGuild, vRoom, member, profileTree) {
   let data = {};
-  let profile = await profiles.show(member.guild.id, member.id);
+  let profile = profileTree[member.id];
+  if(!profile) profile = await profiles.create(currentGuild.guild.id, member.id);
 
   if (!profile) return;
   if (profile.isNew) {
