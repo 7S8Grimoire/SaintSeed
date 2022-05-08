@@ -63,7 +63,7 @@ profiles = {
         }).catch(async err => {
             console.error(err);
         });    
-        return profile;
+        return profileTree;
     },
 
     update: (guild_id, user_id, data) => {           
