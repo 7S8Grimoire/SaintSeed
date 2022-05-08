@@ -46,7 +46,8 @@ module.exports = {
         const width = canvas.width;
         const height = canvas.height;
         const displayName = member.displayName;
-        const avatar = await Canvas.loadImage(user.displayAvatarURL({ format: 'png' }));
+        
+        const avatar = await Canvas.loadImage(member.displayAvatarURL({ format: 'png' }));
         const nameHeightOffset = 270;
         
         // Create bacground with gradient        
