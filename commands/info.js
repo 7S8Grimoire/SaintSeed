@@ -34,7 +34,7 @@ module.exports = {
         
             do {
               // Assign the font to the context and decrement it so it can be measured again
-              context.font = `400 ${fontSize -= 5}px Roboto, Arial, sans-serif`;
+              context.font = `400 ${fontSize -= 5}px HelveticaNeue`;
               // Compare pixel width of the text to the canvas minus the approximate avatar size
               if (fontSize < 0) break;
             } while (context.measureText(text).width > canvas.width - 100);
@@ -84,16 +84,16 @@ module.exports = {
         context.stroke();
 
         // Write user current voice level 
-        context.font = `400 30px Roboto, Arial, sans-serif`;
+        context.font = `400 30px HelveticaNeue`;
         context.textAlign = "center";
         context.fillStyle = textColor;
         context.fillText(profile.level, width / 2, nameHeightOffset + 110);
         
         // Write voice profile details
-        context.font = `400 10px Roboto, Arial, sans-serif`;
+        context.font = `400 10px HelveticaNeue`;
         context.fillText(`${Math.floor(voiceProgress)}%`, width / 2, nameHeightOffset + 130);
         context.fillText('Voice', width / 2, nameHeightOffset + 75);
-        context.font = `400 12px Roboto, Arial, sans-serif`;
+        context.font = `400 12px HelveticaNeue`;
         context.textAlign = "start";        
         context.fillText(getFormatedTime(profile.timespent.global || 0), 25, nameHeightOffset + 110);
         context.textAlign = "end";
@@ -125,16 +125,16 @@ module.exports = {
         context.stroke();
 
         // Write user current voice level 
-        context.font = `400 30px Roboto, Arial, sans-serif`;
+        context.font = `400 30px HelveticaNeue`;
         context.textAlign = "center";
         context.fillStyle = textColor;
         context.fillText(profile.text.level, width / 2, nameHeightOffset + 230);
 
         // Write voice profile details
-        context.font = `400 10px Roboto, Arial, sans-serif`;
+        context.font = `400 10px HelveticaNeue`;
         context.fillText(`${Math.floor(textProgress)}%`, width / 2, nameHeightOffset + 250);
         context.fillText('Text', width / 2, nameHeightOffset + 195);
-        context.font = `400 12px Roboto, Arial, sans-serif`;
+        context.font = `400 12px HelveticaNeue`;
         context.textAlign = "end";
         context.fillText(`${profile.text.message_count} messages`, width-25, nameHeightOffset + 220);
 
