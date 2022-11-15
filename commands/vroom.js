@@ -1,26 +1,26 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const { Constants } = require('discord.js');
-const { MessageEmbed, MessageButton, Permissions } = require('discord.js');
+const { ApplicationCommandOptionType, ChannelType } = require('discord.js');
+const { PermissionFlagsBits, ButtonBuilder, EmbedBuilder, ButtonStyle } = require('discord.js');
 
 const i18next = require('i18next');
 const database = require('../models');
 // const paginationEmbed = require('discordjs-button-pagination');
 const { paginationEmbed } = require('../modules/helpers');
 
-const previousBtn = new MessageButton()
+const previousBtn = new ButtonBuilder()
 	.setCustomId('previousbtn')
 	.setLabel(i18next.t('pagination.prev'))
-	.setStyle('SECONDARY');
+	.setStyle(ButtonStyle.Secondary);
 
-const nextBtn = new MessageButton()
+const nextBtn = new ButtonBuilder()
 	.setCustomId('nextbtn')
 	.setLabel(i18next.t('pagination.next'))
-	.setStyle('SECONDARY');
+	.setStyle(ButtonStyle.Secondary);
 			
 
 module.exports = {
 	raw: true,
-	permissions: [ Permissions.FLAGS.ADMINISTRATOR ],
+	permissions: [ PermissionFlagsBits.Administrator ],
 	categories: ["command_spam"],
 	data: {
 		name: "vroom",
@@ -29,14 +29,14 @@ module.exports = {
 			{
 				name: 'info',
 				description: "Get info about voice room",				
-				type: Constants.ApplicationCommandOptionTypes.SUB_COMMAND,
+				type: ApplicationCommandOptionType.Subcommand,
 				options: [
 					{
 						name: 'channel',
 						description: "Select a channel",
 						required: true,
-						type: Constants.ApplicationCommandOptionTypes.CHANNEL,
-						channel_types: [ Constants.ChannelTypes.GUILD_VOICE ]
+						type: ApplicationCommandOptionType.Channel,
+						channel_types: [ ChannelType.GuildVoice ]
 					},
 				]
 			},
@@ -44,27 +44,27 @@ module.exports = {
 			{
 				name: 'list',
 				description: "Get list of voice rooms",				
-				type: Constants.ApplicationCommandOptionTypes.SUB_COMMAND,
+				type: ApplicationCommandOptionType.Subcommand,
 			},
 
 			{
 				name: 'register',
 				description: "Register a new or update existing voice room",
-				type: Constants.ApplicationCommandOptionTypes.SUB_COMMAND,
+				type: ApplicationCommandOptionType.Subcommand,
 				options: [
 					{
 						name: 'channel',
 						description: "Select a channel",
 						required: true,
-						type: Constants.ApplicationCommandOptionTypes.CHANNEL,
-						channel_types: [ Constants.ChannelTypes.GUILD_VOICE ]
+						type: ApplicationCommandOptionType.Channel,
+						channel_types: [ ChannelType.GuildVoice ]
 					},
 
 					{
 						name: 'experience',
 						description: "Experience per tick",
 						required: true,
-						type: Constants.ApplicationCommandOptionTypes.NUMBER,				
+						type: ApplicationCommandOptionType.Number,				
 					},
 				]
 			},
@@ -72,14 +72,14 @@ module.exports = {
 			{
 				name: 'remove',
 				description: "Removes a voice room",
-				type: Constants.ApplicationCommandOptionTypes.SUB_COMMAND,
+				type: ApplicationCommandOptionType.Subcommand,
 				options: [
 					{
 						name: 'channel',
 						description: "Select a channel",
 						required: true,
-						type: Constants.ApplicationCommandOptionTypes.CHANNEL,
-						channel_types: [ Constants.ChannelTypes.GUILD_VOICE ]
+						type: ApplicationCommandOptionType.Channel,
+						channel_types: [ ChannelType.GuildVoice ]
 					},
 				]
 			},

@@ -1,37 +1,41 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
 const database = require("../models");
 const i18next = require("i18next");
-const { Constants, Permissions } = require("discord.js");
+const { 
+  ApplicationCommandOptionType,
+  ChannelType,
+  PermissionFlagsBits
+} = require("discord.js");
 
 module.exports = {
 	raw: true,
   // ["command_spam", "alert", "roulette"],
-  permissions: [ Permissions.FLAGS.ADMINISTRATOR ],
+  permissions: [ PermissionFlagsBits.Administrator ],
   categories: ["command_spam"],
   data: {
     name: "register",
     description: "Register guild in system",
     options: [
       {
-        type: Constants.ApplicationCommandOptionTypes.SUB_COMMAND,
+        type: ApplicationCommandOptionType.Subcommand,
         name: "server",
         description: "register a server to system",
         options: [],
       },
       {
-        type: Constants.ApplicationCommandOptionTypes.SUB_COMMAND,
+        type: ApplicationCommandOptionType.Subcommand,
         name: "text-channel",
         description: "register a text channel to specific type",
         options: [
           {
-            type: Constants.ApplicationCommandOptionTypes.CHANNEL,
-						channel_types: [ Constants.ChannelTypes.GUILD_TEXT ],
+            type: ApplicationCommandOptionType.Channel,
+						channel_types: [ ChannelType.GuildText ],
             name: "channel",
             description: "Choose a channel",
             required: true,
           },
           {
-            type: Constants.ApplicationCommandOptionTypes.STRING,
+            type: ApplicationCommandOptionType.String,
             name: "channel-category",
             description: "Choose a channel category",
             required: true,
@@ -51,7 +55,7 @@ module.exports = {
             ],
           },
 					{
-						type: Constants.ApplicationCommandOptionTypes.BOOLEAN,
+						type: ApplicationCommandOptionType.Boolean,
 						name: 'channel-remove',
 						description: 'Remove this channel from selected category',
 						required: false,

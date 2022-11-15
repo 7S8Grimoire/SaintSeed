@@ -1,5 +1,9 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const { MessageEmbed, MessageButton, Permissions } = require('discord.js');
+const { 
+  ApplicationCommandOptionType,
+  ChannelType,
+  PermissionFlagsBits
+} = require("discord.js");
 const { Constants } = require('discord.js');
 
 const i18next = require('i18next');
@@ -10,7 +14,7 @@ const { paginationEmbed } = require('../modules/helpers');
 
 
 module.exports = {
-	permissions: [ Permissions.FLAGS.ADMINISTRATOR ],
+	permissions: [ PermissionFlagsBits.Administrator ],
 	categories: ["command_spam"],
 	data: new SlashCommandBuilder()
 		.setName('vrole')
