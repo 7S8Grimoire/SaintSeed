@@ -5,7 +5,7 @@ const { client } = require('./client');
 /* Message delete */
 client.on(Events.MessageDelete, message => {
   /* WIP */
-  if (member.guild.id != "240492317679550465") return;
+  if (message.guild.id != "240492317679550465") return;
   if (message.author.bot || message.author.system) return;
 
   const deletedContent = codeBlock('diff', `-${message.content}`);
