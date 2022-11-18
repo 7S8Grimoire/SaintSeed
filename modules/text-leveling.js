@@ -4,7 +4,8 @@ const { profiles, api } = require('../modules/api');
 const { default: i18next } = require('i18next');
 const database = require('../models');
 
-client.on('messageCreate', async message => {    
+client.on('messageCreate', async message => {
+    if (!process.env.REST_BASE_URL) return;
     if (!message.guild) return;
     if (message.author.bot) return;
     

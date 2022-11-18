@@ -6,7 +6,7 @@ const i18next = require("i18next");
 let tickInterval = process.env.TICK_INTERVAL * 1000;
 
 setInterval(() => {
-  if (database.isConnected) {
+  if (database.isConnected && process.env.REST_BASE_URL) {
     client.guilds.cache.forEach((guild) => {
       tickGuild(guild);
     });

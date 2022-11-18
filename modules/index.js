@@ -6,5 +6,6 @@ module.exports = {
         ...require('./commands'),
         ...require('./voice-leveling'),
         ...require('./text-leveling'),
+        ...require('./logger'),
 }
 

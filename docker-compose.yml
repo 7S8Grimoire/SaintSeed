@@ -1,0 +1,22 @@
+services:
+  bot:
+    image: node:16
+    volumes:
+      - .:/root/saintseed
+      - /root/saintseed/node_modules
+    tty: true
+    networks:
+      - bot
+  database:
+    image: mysql
+    ports: 
+      - 3306:3306
+    environment:
+      - MYSQL_ROOT_PASSWORD=password
+      - MYSQL_DATABASE=saintseed
+      - MYSQL_USER=saintminer
+      - MYSQL_PASSWORD=password
+    networks:
+      - bot
+networks:
+    bot:
