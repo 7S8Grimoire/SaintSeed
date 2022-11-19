@@ -15,7 +15,8 @@ client.on(Events.MessageDelete, message => {
 
 /* Message update */
 client.on(Events.MessageUpdate, (oldMessage, newMessage) => {
-  /* WIP */
+  /* WIP */  
+  if (oldMessage.content == newMessage.content) return;
   if (oldMessage.guild.id != process.env.LOGGING_SERVER) return;
   if (oldMessage.author.bot || oldMessage.author.system) return;
 
