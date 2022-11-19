@@ -106,8 +106,7 @@ profiles = {
         api.post('transaction', params).then(response => {
             // console.log(response.data);
         }).catch(error => {
-            error(error);
-            // console.log(error.response);
+            console.log(error.response.data);
         });
     },
 }

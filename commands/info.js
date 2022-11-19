@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const { MessageEmbed, MessageAttachment } = require('discord.js');
+const { EmbedBuilder, MessageAttachment, AttachmentBuilder } = require('discord.js');
 const { api, profiles } = require('../modules/api');
 const i18next = require('i18next');
 const Canvas = require('canvas');
@@ -47,7 +47,7 @@ module.exports = {
         const height = canvas.height;
         const displayName = member.displayName;
         
-        const avatar = await Canvas.loadImage(member.displayAvatarURL({ format: 'png' }));
+        const avatar = await Canvas.loadImage(member.displayAvatarURL({ extension: 'png' }));
         const nameHeightOffset = 270;
         
         // Create bacground with gradient        
@@ -146,7 +146,7 @@ module.exports = {
         context.drawImage(avatar, width / 2 - 100, 25, 200, 200);
         
         // Send info
-        const attachment = new MessageAttachment(canvas.toBuffer(), 'profile-image.png');
+        const attachment = new AttachmentBuilder(canvas.toBuffer(), 'profile-image.png');
 	    interaction.reply({ files: [attachment] });
 	},
 };

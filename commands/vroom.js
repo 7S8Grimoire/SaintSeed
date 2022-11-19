@@ -124,14 +124,14 @@ module.exports = {
 			const channel = interaction.options.getChannel("channel");
 			const vRoom = await database.VoiceRoom.findOne({ where: { channel_id: channel.id } });
 
-			const vRoomEmbed = new MessageEmbed()
+			const vRoomEmbed = new EmbedBuilder()
 				.setColor(process.env.EMBED_PRIMARY_COLOR)
 				.setTitle(channel.name);
 
-			vRoomEmbed.addField(i18next.t('vRoom.visitorCount'), channel.members.size.toString());
+			vRoomEmbed.addFields({ name: i18next.t('vRoom.visitorCount'), value: channel.members.size.toString() });
 
 			if (vRoom) {
-				vRoomEmbed.addField(i18next.t('vRoom.xpPerTick'), vRoom.xp_per_tick.toString());
+				vRoomEmbed.addFields({ name: i18next.t('vRoom.xpPerTick'),  value: vRoom.xp_per_tick.toString() });
 			} else {
 				vRoomEmbed.setDescription(i18next.t('vRoom.notPartOfSystem'));
 			}
@@ -157,7 +157,7 @@ module.exports = {
 				pageItemCount++;
 
 				if (pageItemCount > 10 || index == vRooms.length-1) {
-					const vRoomEmbed = new MessageEmbed()
+					const vRoomEmbed = new EmbedBuilder()
 						.setColor(process.env.EMBED_PRIMARY_COLOR)
 						.setTitle(i18next.t('vRoom.listTitle'))
 						.setDescription(pageInfo);

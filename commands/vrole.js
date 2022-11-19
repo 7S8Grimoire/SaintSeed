@@ -2,7 +2,8 @@ const { SlashCommandBuilder } = require('@discordjs/builders');
 const { 
   ApplicationCommandOptionType,
   ChannelType,
-  PermissionFlagsBits
+  PermissionFlagsBits,
+	EmbedBuilder
 } = require("discord.js");
 const { Constants } = require('discord.js');
 
@@ -101,7 +102,7 @@ module.exports = {
 				pageItemCount++
 
 				if (pageItemCount > 10 || index == vRoles.length-1) {
-					const vRoleEmbed = new MessageEmbed()
+					const vRoleEmbed = new EmbedBuilder()
 						.setColor(process.env.EMBED_PRIMARY_COLOR)
 						.setTitle(i18next.t('vRole.listTitle'))
 						.setDescription(pageInfo);

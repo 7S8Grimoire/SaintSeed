@@ -1,10 +1,10 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
-const {
-  Constants,
-  MessageEmbed,
-  MessageActionRow,
-  MessageButton,
-  MessageSelectMenu,
+const {  
+  EmbedBuilder,    
+  ActionRowBuilder,
+  ButtonBuilder,
+  ComponentType,
+  ButtonStyle,
 } = require("discord.js");
 const i18next = require("i18next");
 const moment = require("moment");
@@ -78,21 +78,23 @@ async function dice(interaction) {
 
   const componentId = `gable-dice-${moment().unix()}-${interaction.guild.id}`;
 
-  const AcceptDiceDuel = new MessageActionRow().addComponents(
-    new MessageButton()
+  const AcceptDiceDuel = new ActionRowBuilder().addComponents(
+    new ButtonBuilder()
       .setCustomId(componentId)
       .setLabel("GO")
-      .setStyle("SECONDARY")
+      .setStyle(ButtonStyle.Secondary)
   );
 	
-  const EmbedDiceDuel = new MessageEmbed()
+  const EmbedDiceDuel = new EmbedBuilder()
     .setTitle(i18next.t("dice.embedTitle"))
     .setColor(process.env.EMBED_PRIMARY_COLOR)
-    .addField(i18next.t("dice.bet"), `${bet} VP`)
-    .setAuthor(
-      author.displayName,
-      interaction.user.displayAvatarURL({ format: "png" })
+    .addFields(
+      { name: i18next.t("dice.bet"),  value: `${bet} VP` }
     )
+    .setAuthor({
+      name: author.displayName,
+      iconURL: interaction.user.displayAvatarURL({ extension: "png" })
+    })
     .setDescription(
       i18next.t("dice.embedDescription", {
         from: interaction.user,
@@ -107,7 +109,7 @@ async function dice(interaction) {
   interaction.channel
     .awaitMessageComponent({
       filter,
-      componentType: Constants.MessageComponentTypes.BUTTON,
+      componentType: ComponentType.Button,
       time: process.env.INTERACTION_TIMEOUT * 3,
     })
     .then(async (interaction) => {
@@ -170,7 +172,7 @@ async function dice(interaction) {
 			const pOneResult = playerOne.reduce((sum, cube) => sum + cube, 0);
 			const pTwoResult = playerTwo.reduce((sum, cube) => sum + cube, 0);
 			if (pOneResult > pTwoResult) {
-				EmbedDiceDuel.addField(i18next.t('dice.result'), i18next.t('dice.winner', { winner: playerOneProfile.user_id }));
+				EmbedDiceDuel.addFields({ name: i18next.t('dice.result'), value: i18next.t('dice.winner', { winner: playerOneProfile.user_id }) });
 				await profiles.transaction({
 					from: {
 						user_id: playerTwoProfile.user_id,
@@ -184,7 +186,7 @@ async function dice(interaction) {
 					reason: `Gamble | Dice | Bet: ${bet} `,
 				});
 			} else if (pOneResult < pTwoResult) {
-				EmbedDiceDuel.addField(i18next.t('dice.result'), i18next.t('dice.winner', { winner: playerTwoProfile.user_id }));
+				EmbedDiceDuel.addFields({ name: i18next.t('dice.result'), value: i18next.t('dice.winner', { winner: playerTwoProfile.user_id }) });
 				await profiles.transaction({					
 					from: {
 						user_id: playerOneProfile.user_id,
@@ -198,7 +200,7 @@ async function dice(interaction) {
 					reason: `Gamble | Dice | Bet: ${bet} `,
 				});
 			} else {
-				EmbedDiceDuel.addField(i18next.t('dice.result'), i18next.t('dice.draw'));
+				EmbedDiceDuel.addFields({ name: i18next.t('dice.result'), value: i18next.t('dice.draw') });
 			}
 
       return interaction.update({

@@ -10,7 +10,7 @@ client.on(Events.MessageDelete, message => {
 
   const deletedContent = codeBlock('diff', `-${message.content}`);
   message.guild.channels.cache.get(process.env.LOGGING_CHANNEL)
-    .send(`${bold(message.author.tag)} (ID: ${message.author.id}) deleted message (ID: ${message.id}) in ${bold(message.channel.name)} (ID: ${message.channelId}) ${deletedContent}`);
+    .send(`${bold(message.author.tag)} (ID: ${message.author.id}) deleted message (ID: ${message.id}) in ${bold(message.channel.name)} channel (ID: ${message.channelId}) ${deletedContent}`);
 });
 
 /* Message update */

@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
-const { MessageEmbed } = require("discord.js");
+const { EmbedBuilder } = require("discord.js");
 const i18next = require("i18next");
 const { profiles } = require("../modules/api");
 const moment = require("moment");
@@ -20,7 +20,7 @@ module.exports = {
     ),
   async execute(interaction) {
     const subCommand = interaction.options.getSubcommand();
-    const topEmbed = new MessageEmbed()
+    const topEmbed = new EmbedBuilder()
       .setColor(process.env.EMBED_PRIMARY_COLOR)
     let data = [];
     if (subCommand == "voice-level") {
@@ -32,11 +32,11 @@ module.exports = {
         if (member) {
             let nextLevel = (10+profile.level)*10*profile.level*profile.level;
             let percentage = Math.floor(profile.experience/nextLevel*100);
-            topEmbed.addField(`#${ place++ } ${ member.displayName }`, i18next.t('top.voiceLevelRow', { 
+            topEmbed.addFields({ name: `#${ place++ } ${ member.displayName }`, value: i18next.t('top.voiceLevelRow', { 
               level: profile.level,
               experience: profile.experience,
               percentage: percentage,
-            }));
+            })});
         }
         return place > 5;
       });
@@ -58,7 +58,7 @@ module.exports = {
             let seconds = (`0` + (totalSeconds % 60)).slice(-2);
             
             let timeString = i18next.t('time.format', {days, hours, minutes, seconds});
-            topEmbed.addField(`#${ place++ } ${ member.displayName  }`, i18next.t('top.voiceTimeRow', {timeString}));            
+            topEmbed.addFields({ name: `#${ place++ } ${ member.displayName  }`, value: i18next.t('top.voiceTimeRow', {timeString}) });
         }
         return place > 5;
       });
@@ -71,7 +71,7 @@ module.exports = {
       data.some((profile) => {
         let member = interaction.guild.members.cache.get(profile.user_id);
         if (member) {
-          topEmbed.addField(`#${ place++ } ${member.displayName}`,  i18next.t('top.voicepointsRow', { voicepoints: profile.voicepoints }));
+          topEmbed.addFields({ name: `#${ place++ } ${member.displayName}`,  value: i18next.t('top.voicepointsRow', { voicepoints: profile.voicepoints })});
         }
         return place > 5;
       });      
