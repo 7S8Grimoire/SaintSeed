@@ -69,6 +69,22 @@ module.exports = {
       });
     }
 
+    if (subCommand == "voicepoints") {
+      data = await profiles.pointsTop(interaction.guild.id)
+      topEmbed.setTitle(i18next.t("top.voicepoints"));
+      let place = 1;
+      data.some((profile) => {
+        let member = interaction.guild.members.cache.get(profile.user_id);
+        if (member) {
+          topEmbed.addFields({
+            name: `#${ place++ } ${member.displayName}`,
+            value: i18next.t('top.voicepointsRow', { voicepoints: profile.voicepoints })
+          });
+        }
+        return place > 5;
+      });      
+    }
+
     if (subCommand == "connected") {      
       let members = (await interaction.guild.members.fetch()).sort((a, b) => {
         return a.joinedTimestamp - b.joinedTimestamp 
