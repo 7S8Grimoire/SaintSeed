@@ -69,7 +69,7 @@ module.exports = {
     }
 
     if (subCommand == "connected") {
-      const members = interaction.guild.members.cache.sort((a, b) => {
+      const members = (await interaction.guild.members.fetch()).sort((a, b) => {
         return a.joinedTimestamp - b.joinedTimestamp 
       });      
       let place = 1;
