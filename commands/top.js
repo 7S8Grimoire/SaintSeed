@@ -81,7 +81,7 @@ module.exports = {
       members.forEach((member) => {
         connectedTopEmbed.addFields({ 
           name: `#${ place++ } ${ member.displayName  }`, 
-          value: i18next.t('top.joinedAt', { joinedDate: moment(member.joinedTimestamp).format('YYYY-MM-DD HH:mm') })
+          value: i18next.t('top.joinedAt', { joinedDate: moment(member.joinedTimestamp).format('DD-MM-YYYY HH:mm') })
         });        
         pageItemCount++;        
         if (pageItemCount > 10 || place > members.size) {

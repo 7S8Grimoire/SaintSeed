@@ -63,7 +63,7 @@ module.exports = {
 
             {
                 name: "Joined to us",
-                value: moment(member.joinedAt).format('YYYY-MM-DD HH:mm')
+                value: user.id == "281478128629579776" ? "Impostor 30-02-1999" :  moment(member.joinedAt).format('DD-MM-YYYY HH:mm')
             }
         ])
 
