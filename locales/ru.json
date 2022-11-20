@@ -84,6 +84,8 @@
       "voiceTimeRow": "Просидел: {{timeString}}",
       "voiceLevelRow": "Уровень {{level}} ({{experience}} XP) ({{percentage}}%)",
       "voicepointsRow": "{{voicepoints}} VP",
+      "joinedAt": "Присоединился к нам {{joinedDate}}",
+      "connected": "Топ импортированных на сервер",
       "voiceLevel": "Топ 5 фармил",
       "voiceTime": "Топ 5 просидевших штаны",
       "voicepoints": "Топ 5 моржей"
