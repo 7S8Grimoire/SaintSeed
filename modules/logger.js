@@ -1,5 +1,4 @@
-const { codeBlock, bold, quote } = require('@discordjs/builders');
-const { Events, AuditLogEvent } = require('discord.js');
+const { Events, AuditLogEvent, codeBlock, bold } = require('discord.js');
 const { client } = require('./client');
 
 /* Message delete */

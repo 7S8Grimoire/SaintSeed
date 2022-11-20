@@ -1,5 +1,4 @@
-const { SlashCommandBuilder } = require('@discordjs/builders');
-const { EmbedBuilder } = require('discord.js');
+const { EmbedBuilder, SlashCommandBuilder } = require('discord.js');
 const i18next = require('i18next');
 
 const botName = _.upperFirst(_.toLower(process.env.BOT_PERSONALITY));

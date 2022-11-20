@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require('@discordjs/builders');
+const { SlashCommandBuilder } = require('discord.js');
 const { ApplicationCommandOptionType, ChannelType } = require('discord.js');
 const { PermissionFlagsBits, ButtonBuilder, EmbedBuilder, ButtonStyle } = require('discord.js');
 

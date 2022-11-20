@@ -16,8 +16,6 @@
     "sequelize-cli": "^6.4.1"
   },
   "dependencies": {
-    "@discordjs/builders": "^0.6.0",
-    "@discordjs/rest": "^0.1.0-canary.0",
     "axios": "^0.22.0",
     "canvas": "^2.8.0",
     "chance": "^1.1.8",

@@ -89,6 +89,10 @@
       "voiceLevel": "Топ 5 фармил",
       "voiceTime": "Топ 5 просидевших штаны",
       "voicepoints": "Топ 5 моржей"
+    },
+
+    "profile": {
+      "infoTitle": "User {{name}} - full info"
     }
   }
 }

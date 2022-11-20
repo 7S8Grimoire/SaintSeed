@@ -1,5 +1,4 @@
-const { SlashCommandBuilder } = require('@discordjs/builders');
-const { EmbedBuilder, MessageAttachment, AttachmentBuilder } = require('discord.js');
+const { AttachmentBuilder, SlashCommandBuilder } = require('discord.js');
 const { api, profiles } = require('../modules/api');
 const i18next = require('i18next');
 const Canvas = require('canvas');
@@ -95,7 +94,7 @@ module.exports = {
         context.fillText('Voice', width / 2, nameHeightOffset + 75);
         context.font = `400 12px HelveticaNeue`;
         context.textAlign = "start";        
-        context.fillText(getFormatedTime(profile.timespent.global || 0), 25, nameHeightOffset + 110);
+        context.fillText(getFormattedTime(profile.timespent.global || 0), 25, nameHeightOffset + 110);
         context.textAlign = "end";
         context.fillText(`${profile.voicepoints} VP`, width-25, nameHeightOffset + 110);
 
@@ -151,7 +150,7 @@ module.exports = {
 	},
 };
 
-function getFormatedTime(totalSeconds) {
+function getFormattedTime(totalSeconds) {
     let days = Math.floor(totalSeconds / (3600 * 24));
     totalSeconds %= 60 * 60 * 24;
     let hours = (`0` + (Math.floor(totalSeconds / 3600))).slice(-2);

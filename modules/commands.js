@@ -1,7 +1,6 @@
 const { Collection } = require("discord.js");
 const { client } = require("./client");
 const fs = require("fs");
-const log = require("log-beautify");
 const database = require("../models");
 const i18next = require("i18next");
 
@@ -27,7 +26,12 @@ for (const file of commandFiles) {
 client.on("interactionCreate", async (interaction) => {
   if (!interaction.isCommand()) return;
 
-  const command = client.commands.get(interaction.commandName);
+  let command = null;
+  if (interaction.isUserContextMenuCommand()) {
+    command = client.userContextCommands.get(interaction.commandName);
+  } else {
+    command = client.commands.get(interaction.commandName);
+  }
 
   if (!command) return;
 
@@ -75,7 +79,7 @@ client.on("interactionCreate", async (interaction) => {
     }
   }
 
-  try {
+  try {    
     await command.execute(interaction);
   } catch (error) {
     console.error(error);    
