@@ -64,7 +64,7 @@ module.exports = {
 
             {
                 name: "Voicepoints",
-                value: profile.voicepoints
+                value: `${profile.voicepoints}`
             },
 
             {
