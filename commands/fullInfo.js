@@ -42,12 +42,12 @@ module.exports = {
         infoEmbed.setThumbnail(member.displayAvatarURL({ extension: 'png' }))
         infoEmbed.addFields([
             {
-                name: `Voice level: 1 (${voiceProgress}%) (${profile.experience}/${nextVoiceLevelExperience})`,
+                name: `Voice level: ${profile.level} (${voiceProgress}%) (${profile.experience}/${nextVoiceLevelExperience})`,
                 value: `║${"█".repeat(oneFifthPercentVoice)}${"░".repeat(20 - oneFifthPercentVoice)}║`
             },
 
             {
-                name: `Text level: 1 (${textProgress}%) (${profile.text.experience}/${nextTextLevelExperience})`,
+                name: `Text level: ${profile.text.level} (${textProgress}%) (${profile.text.experience}/${nextTextLevelExperience})`,
                 value: `║${"█".repeat(oneFifthPercentText)}${"░".repeat(20 - oneFifthPercentText)}║`
             },
 
