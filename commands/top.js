@@ -93,7 +93,7 @@ module.exports = {
         }
       });
       
-      return paginationEmbed(interaction, pages);
+      return paginationEmbed(interaction, pages, Infinity, true);
     }
 
 

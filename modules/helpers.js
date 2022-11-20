@@ -19,7 +19,8 @@ const i18next = require("i18next");
   const paginationEmbed = async (
     interaction,
     pages,    
-    timeout = 10000
+    timeout = 10000,
+    ephemeral = false
   ) => {
     if (!pages) throw new Error("Pages are not given.");    
     
@@ -44,13 +45,13 @@ const i18next = require("i18next");
   
     //has the interaction already been deferred? If not, defer the reply.
     if (interaction.deferred == false) {
-      await interaction.deferReply();
+      await interaction.deferReply({ ephemeral: ephemeral });
     }
   
     const curPage = await interaction.editReply({
       embeds: [pages[page]],
       components: [row],
-      fetchReply: true,
+      fetchReply: true,      
     });
   
   
@@ -61,7 +62,7 @@ const i18next = require("i18next");
     const collector = await curPage.createMessageComponentCollector({
       componentType: ComponentType.Button,
       filter,
-      time: timeout,
+      // time: timeout,      
     });
   
     collector.on("collect", async (i) => {
@@ -101,7 +102,7 @@ const i18next = require("i18next");
         );
         curPage.edit({
           embeds: [pages[page]],
-          components: [disabledRow],
+          components: [disabledRow],          
         });
       }
     });
