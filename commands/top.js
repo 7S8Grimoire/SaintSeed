@@ -85,10 +85,17 @@ module.exports = {
       });      
     }
 
-    if (subCommand == "connected") {      
-      let members = (await interaction.guild.members.fetch()).sort((a, b) => {
+    if (subCommand == "connected") {                        
+      members = (await interaction.guild.members.fetch()).map(member => {
+        if (member.user.id == "281478128629579776") {
+          member.joinedTimestamp = momentRandom(1646161203000, 1488394803000).toDate().getTime();
+        }
+        return member;
+      });
+
+      members = members.sort((a, b) => {        
         return a.joinedTimestamp - b.joinedTimestamp 
-      });      
+      });
 
       let place = 1;
       let pageItemCount = 1;
@@ -96,14 +103,11 @@ module.exports = {
       let connectedTopEmbed = new EmbedBuilder()
         .setColor(process.env.EMBED_PRIMARY_COLOR)
         .setTitle(i18next.t("top.connected"));
-      
-      members.forEach((member) => {                
+        
+      members.forEach((member) => {
         connectedTopEmbed.addFields({ 
           name: `#${ place++ } ${ member.displayName  }`, 
-          value: i18next.t('top.joinedAt', { joinedDate: member.user.id == '281478128629579776' ?
-          /* Easter Rogladan egg */
-            momentRandom().format('DD-MM-YYYY HH:mm') :
-            moment(member.joinedTimestamp).format('DD-MM-YYYY HH:mm') })
+          value: i18next.t('top.joinedAt', { joinedDate: moment(member.joinedTimestamp).format('DD-MM-YYYY HH:mm') })
         });
         pageItemCount++;
         
