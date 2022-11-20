@@ -58,8 +58,13 @@ module.exports = {
             },
 
             {
-                name: "Time spent",
+                name: "Time spent in voice",
                 value: getFormattedTime(profile.timespent.global || 0)
+            },
+
+            {
+                name: "Voicepoints",
+                value: profile.voicepoints
             },
 
             {
