@@ -2,6 +2,7 @@ const { EmbedBuilder, SlashCommandBuilder } = require('discord.js');
 const { api, profiles } = require('../modules/api');
 const i18next = require('i18next');
 const moment = require("moment");
+const momentRandom = require('moment-random');
 
 module.exports = {
     categories: ["command_spam", "roulette"],
@@ -63,7 +64,9 @@ module.exports = {
 
             {
                 name: "Joined to us",
-                value: user.id == "281478128629579776" ? "Impostor 30-02-1999" :  moment(member.joinedAt).format('DD-MM-YYYY HH:mm')
+                value: user.id == "281478128629579776" ?
+                    `Impostor ${momentRandom().format('DD-MM-YYYY HH:mm')}` :
+                    moment(member.joinedAt).format('DD-MM-YYYY HH:mm')
             }
         ])
 

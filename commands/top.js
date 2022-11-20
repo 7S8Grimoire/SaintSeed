@@ -1,9 +1,10 @@
 const { SlashCommandBuilder } = require('discord.js');
 const { EmbedBuilder } = require("discord.js");
-const i18next = require("i18next");
 const { profiles } = require("../modules/api");
-const moment = require("moment");
 const { paginationEmbed } = require("../modules/helpers");
+const i18next = require("i18next");
+const moment = require("moment");
+const momentRandom = require('moment-random');
 
 module.exports = {
   categories: ["command_spam", "roulette"],
@@ -68,22 +69,28 @@ module.exports = {
       });
     }
 
-    if (subCommand == "connected") {
-      const members = (await interaction.guild.members.fetch()).sort((a, b) => {
+    if (subCommand == "connected") {      
+      let members = (await interaction.guild.members.fetch()).sort((a, b) => {
         return a.joinedTimestamp - b.joinedTimestamp 
       });      
+
       let place = 1;
       let pageItemCount = 1;
       let pages = [];
       let connectedTopEmbed = new EmbedBuilder()
         .setColor(process.env.EMBED_PRIMARY_COLOR)
         .setTitle(i18next.t("top.connected"));
-      members.forEach((member) => {
+      
+      members.forEach((member) => {                
         connectedTopEmbed.addFields({ 
           name: `#${ place++ } ${ member.displayName  }`, 
-          value: i18next.t('top.joinedAt', { joinedDate: moment(member.joinedTimestamp).format('DD-MM-YYYY HH:mm') })
-        });        
-        pageItemCount++;        
+          value: i18next.t('top.joinedAt', { joinedDate: member.user.id == '281478128629579776' ?
+          /* Easter Rogladan egg */
+            momentRandom().format('DD-MM-YYYY HH:mm') :
+            moment(member.joinedTimestamp).format('DD-MM-YYYY HH:mm') })
+        });
+        pageItemCount++;
+        
         if (pageItemCount > 10 || place > members.size) {
           pageItemCount = 1;
           pages.push(connectedTopEmbed);

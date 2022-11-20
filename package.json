@@ -27,6 +27,7 @@
     "lodash": "^4.17.21",
     "log-beautify": "^1.2.0",
     "moment": "^2.29.1",
+    "moment-random": "^1.1.0",
     "mysql": "^2.18.1",
     "mysql2": "^2.3.0",
     "random": "^3.0.6",
