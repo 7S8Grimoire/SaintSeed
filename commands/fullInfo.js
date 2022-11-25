@@ -77,7 +77,8 @@ module.exports = {
 
         const now = moment();
 		const last_dima_today = moment.unix(profile.data?.dima_today_at);
-        if (profile.data?.dima_today && now.isSame(last_dima_today, 'day')) {
+        const dimases_ids = process.env.DIMASES_IDS.split(',');
+        if (profile.data?.dima_today && now.isSame(last_dima_today, 'day') && dimases_ids.includes(interaction.user.id)) {
             infoEmbed.addFields([
                 {
                     name: "Dima today",
