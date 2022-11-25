@@ -1,4 +1,4 @@
-const { EmbedBuilder, SlashCommandBuilder } = require('discord.js');
+const { EmbedBuilder, SlashCommandBuilder, bold } = require('discord.js');
 const { api, profiles } = require('../modules/api');
 const i18next = require('i18next');
 const moment = require("moment");
@@ -73,7 +73,18 @@ module.exports = {
                     `Impostor ${momentRandom().format('DD-MM-YYYY HH:mm')}` :
                     moment(member.joinedAt).format('DD-MM-YYYY HH:mm')
             }
-        ])
+        ]);
+
+        const now = moment();
+		const last_dima_today = moment.unix(profile.data?.dima_today_at);
+        if (profile.data?.dima_today && now.isSame(last_dima_today, 'day')) {
+            infoEmbed.addFields([
+                {
+                    name: "Dima today",
+                    value: `${profile.data.dima_today}`
+                }
+            ])
+        }
 
         await interaction.reply({
             embeds: [ infoEmbed ],

@@ -2,6 +2,7 @@ const { AttachmentBuilder, SlashCommandBuilder } = require('discord.js');
 const { api, profiles } = require('../modules/api');
 const i18next = require('i18next');
 const Canvas = require('canvas');
+const moment = require('moment');
 
 module.exports = {
     categories: ["command_spam", "roulette"],

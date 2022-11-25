@@ -28,13 +28,17 @@ require('./events');
 client.once('ready', () => {
     log.info(`${client.user.tag} has logged in successfully!`);
     log.info(`Ready to serve on ${client.guilds.cache.size} servers, for ${client.users.cache.size} users.`);
-    client.guilds.cache.forEach(guild => {        
-        rest.put(Routes.applicationGuildCommands(client.user.id, guild.id), { body: commandLibrary })
-            .then(() => {
-                log.info(`Successfully registered application commands (${commandLibrary.length}) for guild ${guild.name} (${guild.id}).`)
-            })
-            .catch(error => {
-                console.error(error)
-            });
+    client.guilds.cache.forEach(guild => {
+        const guildCommands = commandLibrary.filter(command => !command.guilds_white_list || command.guilds_white_list.includes(guild.id));        
+        rest.put(
+            Routes.applicationGuildCommands(client.user.id, guild.id),
+            { body: guildCommands }
+        )
+        .then(() => {
+            log.info(`Successfully registered application commands (${guildCommands.length}) for guild ${guild.name} (${guild.id}).`)
+        })
+        .catch(error => {
+            console.error(error)
+        });
     });
 });
