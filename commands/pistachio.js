@@ -83,8 +83,7 @@ async function info(interaction, profile) {
   const master = await interaction.guild.members.fetch(master_id);
   const pistachios_records = profile.data?.pistachios_records ?? [];
   const gram = pistachios_records.reduce((accumulator, record) => accumulator += record.grams, 0);
-  const percentage = gram ? gram / 10 * 100 : 0;
-  
+  const percentage = gram ? Math.round(gram / 10) / 100 : 0;  
   const embed = new EmbedBuilder()
     .setTitle('Статус обфисташкивания')
     .setThumbnail(master.displayAvatarURL({ extension: 'png' }))
