@@ -5,7 +5,7 @@ const dima_variants = require('../config/dima-variants.json');
 const moment = require('moment');
 
 module.exports = {	
-	categories: ["command_spam", "roulette"],
+	categories: ["command_spam"],
 	guilds_white_list: [process.env.BREAD_BAKERY_ID],
 	data: new SlashCommandBuilder()
 		.setName('dima-today')

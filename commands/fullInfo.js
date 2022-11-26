@@ -1,4 +1,4 @@
-const { EmbedBuilder, SlashCommandBuilder, bold } = require('discord.js');
+const { EmbedBuilder, SlashCommandBuilder, bold, time, TimestampStyles } = require('discord.js');
 const { api, profiles } = require('../modules/api');
 const i18next = require('i18next');
 const moment = require("moment");
@@ -70,8 +70,8 @@ module.exports = {
             {
                 name: "Joined to us",
                 value: user.id == "281478128629579776" ?
-                    `Impostor ${momentRandom().format('DD-MM-YYYY HH:mm')}` :
-                    moment(member.joinedAt).format('DD-MM-YYYY HH:mm')
+                    `Impostor ${time(momentRandom().toDate(), TimestampStyles.ShortDateTime)}` :
+                    time(moment(member.joinedAt).toDate(), TimestampStyles.ShortDateTime)
             }
         ]);
 
