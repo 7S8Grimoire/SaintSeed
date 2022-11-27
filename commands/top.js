@@ -65,7 +65,7 @@ module.exports = {
             let timeString = i18next.t('time.format', {days, hours, minutes, seconds});
             topEmbed.addFields({ name: `#${ place++ } ${ member.displayName  }`, value: i18next.t('top.voiceTimeRow', { timeString }) });
         }
-        return place > 5;
+        return place > 20;
       });
     }
 
