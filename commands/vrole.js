@@ -35,6 +35,10 @@ module.exports = {
 				.setName('remove-on-level')
 				.setDescription('Remove on level')
 				.setRequired(false)
+			).addBooleanOption(option => option
+				.setName('enable-baking')
+				.setDescription('Enable baking (payday)')
+				.setRequired(false)
 			),
 		)
 		.addSubcommand(subcommand => subcommand
@@ -62,8 +66,10 @@ module.exports = {
 				},
 			});
 			vRole.conditions = {};
+			vRole.bonuses = {};
 			vRole.conditions.addOnLevel = interaction.options.getNumber("add-on-level");
 			vRole.conditions.removeOnLevel = interaction.options.getNumber("remove-on-level");
+			vRole.bonuses.baking = interaction.options.getBoolean("enable-baking");
 			vRole.save();
 			if (created) {
 				interaction.reply(i18next.t('vRole.created'));
@@ -98,7 +104,7 @@ module.exports = {
 				const role = guild.roles.cache.get(vRole.role_id);
 				if (!role) return;
 
-				pageInfo += `[**${index+1}**] ${role.name} | **+(${vRole.conditions?.addOnLevel})** **-(${vRole.conditions?.removeOnLevel ?? '⛔︎'})** \n`;
+				pageInfo += `[**${index+1}**] ${role.name} | **+(${vRole.conditions?.addOnLevel})** **-(${vRole.conditions?.removeOnLevel ?? '⛔︎'})** ${vRole.bonuses?.baking ? '🦾' : ''}\n`;
 				pageItemCount++
 
 				if (pageItemCount > 10 || index == vRoles.length-1) {

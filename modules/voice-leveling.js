@@ -2,6 +2,7 @@ const { client } = require("./client");
 const { profiles } = require("./api");
 const database = require('../models');
 const i18next = require("i18next");
+const { Op } = require("sequelize");
 
 let tickInterval = process.env.TICK_INTERVAL * 1000;
 
@@ -47,7 +48,7 @@ async function tickMember(currentGuild, vRoom, member, profileTree) {
 
   if (!profile) return;
   if (profile.isNew) {
-    processVoiceRole(member, profile.level);
+    assignVoiceRole(member, profile.level);
   }
 
   data.user_id = member.id;
@@ -60,15 +61,18 @@ async function tickMember(currentGuild, vRoom, member, profileTree) {
   data.experience = experienceToAdd;
   data.timespent = {
     global: +process.env.TICK_INTERVAL,
+    baking: 0
   };
-
+  
+  await processVoiceRole(member, data);
   
   profile.experience += experienceToAdd;
+  profile.timespent.baking += data.timespent.baking;
   
   // level up
   if (profile.experience >= nextLevelExperience) {
     data.level = 1;
-    data.experience = -nextLevelExperience+experienceToAdd;
+    data.experience = -nextLevelExperience + experienceToAdd;
           
     profiles.transaction({
       from: "self",
@@ -76,11 +80,12 @@ async function tickMember(currentGuild, vRoom, member, profileTree) {
         user_id: profile.user_id,
         guild_id: profile.guild_id,
       },
-      amount: 10 * ++profile.level,
+      amount: 1000 * ++profile.level,
       reason: `level up`,
     });    
 
-    processVoiceRole(member, profile.level);
+    assignVoiceRole(member, profile.level);    
+    
 
     const aChannels = await database.GuildChannel.findAll({
       where: {
@@ -98,10 +103,24 @@ async function tickMember(currentGuild, vRoom, member, profileTree) {
     });
   }
 
+  const timeToPayday = 1 * 60 * 60;
+  if (profile.timespent.baking >= timeToPayday) {
+    data.timespent.baking = -timeToPayday + data.timespent.baking;
+    profiles.transaction({
+      from: "self",
+      to: {
+        user_id: profile.user_id,
+        guild_id: profile.guild_id,
+      },
+      amount: 10 * profile.level,
+      reason: `Baking`,
+    });
+  }
+
   return data;
 }
 
-async function processVoiceRole(member, level) {
+async function assignVoiceRole(member, level) {
   let vRoles = await database.VoiceRole.findAll({ where: { guild_id: member.guild.id } });
   let vRolesToAdd = vRoles.filter(vRole => vRole.conditions?.addOnLevel == level);
   let vRolesToRemove = vRoles.filter(vRole => vRole.conditions?.removeOnLevel == level);
@@ -113,4 +132,21 @@ async function processVoiceRole(member, level) {
   vRolesToRemove.forEach(vRole => {
     member.roles.remove(vRole.role_id);
   });
+}
+
+async function processVoiceRole(member, data) {  
+  const member_roles_ids = member.roles.cache.map(role => role.id);
+  let vRoles = await database.VoiceRole.findAll({ 
+    where: {
+      guild_id: member.guild.id,
+      role_id: {
+        [Op.in]: member_roles_ids
+      }
+    } 
+  });
+  vRoles.forEach(vRole => {
+    if (vRole.bonuses?.baking) {
+      data.timespent.baking += +process.env.TICK_INTERVAL;
+    }
+  });  
 }
