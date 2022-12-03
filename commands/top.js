@@ -130,7 +130,7 @@ module.exports = {
 
     if (subCommand == "pray-total") {
       data = (await profiles.prayStreakTop(interaction.guild.id)).sort((a, b) => {
-        return a.pray.total - b.pray.total;
+        return b.pray.total - a.pray.total;
       });
       topEmbed.setTitle(i18next.t("top.prayStreak"));
       let place = 1;
