@@ -12,8 +12,8 @@ const { profiles, api } = require("../modules/api");
 const { data } = require("./pray");
 
 const owner_id = "240491981426393088";
-const anton_id = "240491981426393088";
-const piu_piu_id = "240491981426393088";
+const anton_id = "281478128629579776";
+const piu_piu_id = "319116123612119040";
 const EXP_MONEY = 1;
 const EXP_NOT_MONEY = 2;
 const NOT_EXP_MONEY = 3;
@@ -26,37 +26,9 @@ module.exports = {
     .setName("1-act")
     .setDescription("Start 1 act"),
   async execute(interaction) {
-    api.get(`profile/${process.env.BREAD_BAKERY_ID}`, {
-      params: {
-        limit: 0
-      }
-    })
-      .then(({ data }) => {
-        const experienceEarnedList = [];
-        const mappedPizdecZeroing = data.map(profile => {
-          const earnedExperience = profile.pray?.total * 9 * 1000;
-          experienceEarnedList.push({
-            user_id: profile.user_id,
-            earnedExperience: earnedExperience
-          });
-          return {
-            user_id: profile.user_id,
-            guild_id: profile.guild_id,
-            experience: profile.experience + earnedExperience,
-            pray: {
-              date: 0,
-              streak: 0,
-              total: 0
-            }
-          }
-        });
-
-        api.patch(`profile`, mappedPizdecZeroing);
-
-      });
-    // if (interaction.user.id == anton_id) {
-    //   return await interaction.reply('А я знаю чего ты хочешь, но увы Мы тебя знаем 😁');
-    // }
+    if (interaction.user.id == anton_id) {
+      return await interaction.reply('А я знаю чего ты хочешь, но увы Мы тебя знаем');
+    }
     if (interaction.user.id != owner_id) {
       return await interaction.reply('Спасибо что проверяете меня 😚');
     }
@@ -261,12 +233,52 @@ async function part_4(interaction, choose) {
     profiles.bulkAdd(data);
   }
 
-  const savePrays = getResult(choose) == NOT_EXT_NOT_MONEY || getResult(choose) == NOT_EXP_MONEY;
+  const savePiuPiuPrays = getResult(choose) == NOT_EXT_NOT_MONEY || getResult(choose) == NOT_EXP_MONEY;  
+  const experienceEarnedList = [];
 
+  await api.get(`profile/${process.env.BREAD_BAKERY_ID}`, {
+    params: {
+      limit: 0
+    }
+  })
+    .then(({ data }) => {
+      if (savePiuPiuPrays) {
+        data = data.filter(profile => profile.user_id != piu_piu_id);
+      }
+      const mappedPizdecZeroing = data.map(profile => {
+        const earnedExperience = profile.pray?.total * 9 * 1000;
+        experienceEarnedList.push({
+          user_id: profile.user_id,
+          earnedExperience: earnedExperience,
+          had_total: profile.pray?.total,
+        });        
+        return {
+          user_id: profile.user_id,
+          guild_id: profile.guild_id,
+          experience: profile.experience + earnedExperience,
+          pray: {
+            date: 0,
+            streak: 0,
+            total: 0
+          }
+        }
+      });
 
+      api.patch(`profile`, mappedPizdecZeroing);
+
+    });
+  
+  const convertedEmbed = new EmbedBuilder()
+    .setTitle('Топ конвертов')
+    .addFields(experienceEarnedList.slice(0, 10).map(earned => {
+      return {
+        name: interaction.guild.members.cache.get(earned.user_id).displayName,
+        value: `${earned.had_total} преев => ${earned.earnedExperience} експи`,
+      }
+    }));
 
   await interaction.editReply({
-    embeds: [embed],
+    embeds: [embed, convertedEmbed],
     components: [],
   });
 }

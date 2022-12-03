@@ -24,7 +24,7 @@ module.exports = {
       subCommand.setName('connected').setDescription("connected to server top")
     )
     .addSubcommand((subCommand) =>
-      subCommand.setName('pray-streak').setDescription("prays top")
+      subCommand.setName('pray-total').setDescription("prays top")
     ),
   async execute(interaction) {
     const subCommand = interaction.options.getSubcommand();
@@ -128,8 +128,10 @@ module.exports = {
       return paginationEmbed(interaction, pages, Infinity, true);
     }
 
-    if (subCommand == "pray-streak") {
-      data = await profiles.prayStreakTop(interaction.guild.id);
+    if (subCommand == "pray-total") {
+      data = (await profiles.prayStreakTop(interaction.guild.id)).sort((a, b) => {
+        return a.pray.total - b.pray.total;
+      });
       topEmbed.setTitle(i18next.t("top.prayStreak"));
       let place = 1;
       data.some((profile) => {
@@ -137,10 +139,10 @@ module.exports = {
         if (member) {
           topEmbed.addFields({
             name: `#${place++} ${member.displayName}`,
-            value: i18next.t('top.prayStreakRow', { prayStreak: profile.pray.streak })
+            value: i18next.t('top.prayTotalRow', { prayTotal: profile.pray.streak })
           });
         }
-        return place > 20;
+        return place > 10;
       });
 
     }
