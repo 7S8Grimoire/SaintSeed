@@ -139,7 +139,7 @@ module.exports = {
         if (member) {
           topEmbed.addFields({
             name: `#${place++} ${member.displayName}`,
-            value: i18next.t('top.prayTotalRow', { prayTotal: profile.pray.streak })
+            value: i18next.t('top.prayTotalRow', { prayTotal: profile.pray.total })
           });
         }
         return place > 10;
