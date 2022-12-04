@@ -20,6 +20,7 @@ const NOT_EXP_MONEY = 3;
 const NOT_EXT_NOT_MONEY = 4;
 
 module.exports = {
+  disabled: true,
   // categories: ["command_spam", "roulette"],
   guilds_white_list: [process.env.BREAD_BAKERY_ID],
   data: new SlashCommandBuilder()
@@ -217,7 +218,7 @@ async function part_4(interaction, choose) {
         experience: 8 * 1000 * 1000 + 8 * 100 * 1000,
       },
     ];
-    profiles.bulkAdd(data);
+    await profiles.bulkAdd(data);
   }
   else if (getResult(choose) == NOT_EXP_MONEY) {
 
@@ -230,7 +231,7 @@ async function part_4(interaction, choose) {
         experience: 8 * 100 * 1000,
       },
     ];
-    profiles.bulkAdd(data);
+    await profiles.bulkAdd(data);
   }
 
   const savePiuPiuPrays = getResult(choose) == NOT_EXT_NOT_MONEY || getResult(choose) == NOT_EXP_MONEY;  
