@@ -84,11 +84,13 @@
       "voiceTimeRow": "Просидел: {{timeString}}",
       "voiceLevelRow": "Уровень {{level}} ({{experience}} XP) ({{percentage}}%)",
       "voicepointsRow": "{{voicepoints}} VP",
+      "prayTotalRow": "{{prayTotal}} prays total",
       "joinedAt": "Присоединился к нам {{joinedDate}}",
       "connected": "Топ импортированных на сервер",
       "voiceLevel": "Топ 5 фармил",
       "voiceTime": "Топ 20 просидевших штаны",
-      "voicepoints": "Топ 5 моржей"
+      "voicepoints": "Топ 5 моржей",
+      "prayStreak": "Топ молящих о помощи"
     },
 
     "profile": {
