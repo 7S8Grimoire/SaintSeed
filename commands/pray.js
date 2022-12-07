@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require('@discordjs/builders');
+const { SlashCommandBuilder } = require('discord.js');
 const { profiles } = require('../modules/api');
 const i18next = require('i18next');
 const random = require('random');

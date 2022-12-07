@@ -1,7 +1,6 @@
 const { Collection } = require("discord.js");
 const { client } = require("./client");
 const fs = require("fs");
-const log = require("log-beautify");
 const database = require("../models");
 const i18next = require("i18next");
 
@@ -13,29 +12,47 @@ client.commands = new Collection();
 
 for (const file of commandFiles) {
   const command = require(`../commands/${file}`);
-	if (command.disabled) {
-		continue;
-	}
-  if (command.raw) {
-    commands.push(command.data);
-  } else {
-    commands.push(command.data.toJSON());
+  /* Skip if command is disabled */
+  if (command.disabled) {
+    continue;
   }
+
+  /* Check is command raw or builded */
+  const data = command.raw ? command.data : command.data.toJSON();
+
+  /* Set whitelist guilds */
+  data.guilds_white_list = command.guilds_white_list;
+  commands.push(data);
   client.commands.set(command.data.name, command);
 }
 
 client.on("interactionCreate", async (interaction) => {
+  /* Check is interaction - command */
   if (!interaction.isCommand()) return;
 
-  const command = client.commands.get(interaction.commandName);
+  let command = null;
+  /* Use slash command or context-menu-commands */
+  /* And search command */
+  if (interaction.isUserContextMenuCommand()) {
+    command = client.userContextCommands.get(interaction.commandName);
+  } else {
+    command = client.commands.get(interaction.commandName);
+  }
 
-  if (!command) return;
+  /* If command not found, drop error */
+  if (!command) {
+    await interaction.reply({
+      content: "Command not found",
+      ephemeral: true,
+    });
+  }
 
+  /* Check has user a power to use this commands */
   const isPowered = command.powerlist?.includes(interaction.user.id);
   const isOwner = process.env.BOT_OWNERS.split(',').includes(interaction.user.id);
-
   const hasPowerPermissions = isPowered || isOwner;
 
+  /* Validate user permissions */
   if (command.permissions?.length && !hasPowerPermissions) {
     const hasPermission = interaction.member.permissions.has(
       command.permissions
@@ -48,6 +65,8 @@ client.on("interactionCreate", async (interaction) => {
       return;
     }
   }
+
+  /* Validate channel category */
   if (command.categories?.length && !hasPowerPermissions) {
     const commandAvailableChannels = await database.GuildChannel.findAll({
       where: {
@@ -65,7 +84,7 @@ client.on("interactionCreate", async (interaction) => {
       if (!isCategorized) {
         await interaction.reply({
           content: i18next.t(`commands.incorrectCategoryChannel`, {
-            channels: channelsReferences.join(i18next.t("commands.incorrectCategoryChannelOr")),					
+            channels: channelsReferences.join(i18next.t("commands.incorrectCategoryChannelOr")),
           }),
           ephemeral: true,
         });
@@ -75,10 +94,11 @@ client.on("interactionCreate", async (interaction) => {
     }
   }
 
+  /* Catch execution error */
   try {
     await command.execute(interaction);
   } catch (error) {
-    console.error(error);    
+    console.error(error);
     await interaction.reply({
       content: "There was an error while executing this command!",
       ephemeral: true,

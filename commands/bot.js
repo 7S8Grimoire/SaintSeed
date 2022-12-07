@@ -1,5 +1,4 @@
-const { SlashCommandBuilder } = require('@discordjs/builders');
-const { MessageEmbed } = require('discord.js');
+const { EmbedBuilder, SlashCommandBuilder } = require('discord.js');
 const i18next = require('i18next');
 
 const botName = _.upperFirst(_.toLower(process.env.BOT_PERSONALITY));
@@ -10,14 +9,16 @@ module.exports = {
 		.setName(_.toLower(process.env.BOT_PERSONALITY))
 		.setDescription(`Get info about ${botName}!`),
 	async execute(interaction) {
-		const botInfoEmbed = new MessageEmbed()
+		const botInfoEmbed = new EmbedBuilder()
         .setColor("#580ad6")
         .setThumbnail(interaction.client.user.displayAvatarURL({ format: 'png' }))
         .setTitle(botName)        
 
-    botInfoEmbed.addField('Version', process.env.BOT_VERSION, true);
-    botInfoEmbed.addField('Launched at', botLaunchedAt, true);
-    botInfoEmbed.addField('Baked with', 'ଘ(੭˃ᴗ˂)💜', true);        
+    botInfoEmbed.addFields(
+			{ name: 'Version', value: process.env.BOT_VERSION, inline: true },
+			{ name: 'Launched at', value: botLaunchedAt, inline: true },
+			{ name: 'Baked with', value: 'ଘ(੭˃ᴗ˂)💜', inline: true },
+		);
 
 		await interaction.reply({
 			embeds: [botInfoEmbed]

@@ -1,5 +1,10 @@
-const { SlashCommandBuilder } = require('@discordjs/builders');
-const { MessageEmbed, MessageButton, Permissions } = require('discord.js');
+const { SlashCommandBuilder } = require('discord.js');
+const { 
+  ApplicationCommandOptionType,
+  ChannelType,
+  PermissionFlagsBits,
+	EmbedBuilder
+} = require("discord.js");
 const { Constants } = require('discord.js');
 
 const i18next = require('i18next');
@@ -10,7 +15,7 @@ const { paginationEmbed } = require('../modules/helpers');
 
 
 module.exports = {
-	permissions: [ Permissions.FLAGS.ADMINISTRATOR ],
+	permissions: [ PermissionFlagsBits.Administrator ],
 	categories: ["command_spam"],
 	data: new SlashCommandBuilder()
 		.setName('vrole')
@@ -29,6 +34,10 @@ module.exports = {
 			).addNumberOption(option => option
 				.setName('remove-on-level')
 				.setDescription('Remove on level')
+				.setRequired(false)
+			).addBooleanOption(option => option
+				.setName('enable-baking')
+				.setDescription('Enable baking (payday)')
 				.setRequired(false)
 			),
 		)
@@ -57,8 +66,10 @@ module.exports = {
 				},
 			});
 			vRole.conditions = {};
+			vRole.bonuses = {};
 			vRole.conditions.addOnLevel = interaction.options.getNumber("add-on-level");
 			vRole.conditions.removeOnLevel = interaction.options.getNumber("remove-on-level");
+			vRole.bonuses.baking = interaction.options.getBoolean("enable-baking");
 			vRole.save();
 			if (created) {
 				interaction.reply(i18next.t('vRole.created'));
@@ -93,11 +104,11 @@ module.exports = {
 				const role = guild.roles.cache.get(vRole.role_id);
 				if (!role) return;
 
-				pageInfo += `[**${index+1}**] ${role.name} | **+(${vRole.conditions?.addOnLevel})** **-(${vRole.conditions?.removeOnLevel ?? '⛔︎'})** \n`;
+				pageInfo += `[**${index+1}**] ${role.name} | **+(${vRole.conditions?.addOnLevel})** **-(${vRole.conditions?.removeOnLevel ?? '⛔︎'})** ${vRole.bonuses?.baking ? '🦾' : ''}\n`;
 				pageItemCount++
 
 				if (pageItemCount > 10 || index == vRoles.length-1) {
-					const vRoleEmbed = new MessageEmbed()
+					const vRoleEmbed = new EmbedBuilder()
 						.setColor(process.env.EMBED_PRIMARY_COLOR)
 						.setTitle(i18next.t('vRole.listTitle'))
 						.setDescription(pageInfo);

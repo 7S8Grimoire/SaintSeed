@@ -1,8 +1,8 @@
-const { SlashCommandBuilder } = require('@discordjs/builders');
-const { MessageEmbed, MessageAttachment } = require('discord.js');
+const { AttachmentBuilder, SlashCommandBuilder } = require('discord.js');
 const { api, profiles } = require('../modules/api');
 const i18next = require('i18next');
 const Canvas = require('canvas');
+const moment = require('moment');
 
 module.exports = {
     categories: ["command_spam", "roulette"],
@@ -47,7 +47,7 @@ module.exports = {
         const height = canvas.height;
         const displayName = member.displayName;
         
-        const avatar = await Canvas.loadImage(member.displayAvatarURL({ format: 'png' }));
+        const avatar = await Canvas.loadImage(member.displayAvatarURL({ extension: 'png' }));
         const nameHeightOffset = 270;
         
         // Create bacground with gradient        
@@ -95,7 +95,7 @@ module.exports = {
         context.fillText('Voice', width / 2, nameHeightOffset + 75);
         context.font = `400 12px HelveticaNeue`;
         context.textAlign = "start";        
-        context.fillText(getFormatedTime(profile.timespent.global || 0), 25, nameHeightOffset + 110);
+        context.fillText(getFormattedTime(profile.timespent.global || 0), 25, nameHeightOffset + 110);
         context.textAlign = "end";
         context.fillText(`${profile.voicepoints} VP`, width-25, nameHeightOffset + 110);
 
@@ -146,12 +146,12 @@ module.exports = {
         context.drawImage(avatar, width / 2 - 100, 25, 200, 200);
         
         // Send info
-        const attachment = new MessageAttachment(canvas.toBuffer(), 'profile-image.png');
+        const attachment = new AttachmentBuilder(canvas.toBuffer(), 'profile-image.png');
 	    interaction.reply({ files: [attachment] });
 	},
 };
 
-function getFormatedTime(totalSeconds) {
+function getFormattedTime(totalSeconds) {
     let days = Math.floor(totalSeconds / (3600 * 24));
     totalSeconds %= 60 * 60 * 24;
     let hours = (`0` + (Math.floor(totalSeconds / 3600))).slice(-2);

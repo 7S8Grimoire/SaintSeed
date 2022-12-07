@@ -1,8 +1,10 @@
-const { SlashCommandBuilder } = require("@discordjs/builders");
-const { MessageEmbed } = require("discord.js");
-const i18next = require("i18next");
+const { SlashCommandBuilder } = require('discord.js');
+const { EmbedBuilder } = require("discord.js");
 const { profiles } = require("../modules/api");
+const { paginationEmbed } = require("../modules/helpers");
+const i18next = require("i18next");
 const moment = require("moment");
+const momentRandom = require('moment-random');
 
 module.exports = {
   categories: ["command_spam", "roulette"],
@@ -17,50 +19,58 @@ module.exports = {
     )
     .addSubcommand((subcommand) =>
       subcommand.setName("voicepoints").setDescription("voicepoints top")
+    )
+    .addSubcommand((subCommand) =>
+      subCommand.setName('connected').setDescription("connected to server top")
+    )
+    .addSubcommand((subCommand) =>
+      subCommand.setName('pray-total').setDescription("prays top")
     ),
   async execute(interaction) {
     const subCommand = interaction.options.getSubcommand();
-    const topEmbed = new MessageEmbed()
+    const topEmbed = new EmbedBuilder()
       .setColor(process.env.EMBED_PRIMARY_COLOR)
     let data = [];
     if (subCommand == "voice-level") {
       let place = 1;
       data = await profiles.levelTop(interaction.guild.id)
-      topEmbed.setTitle(i18next.t("top.voiceLevel"));    
+      topEmbed.setTitle(i18next.t("top.voiceLevel"));
       data.some((profile) => {
         let member = interaction.guild.members.cache.get(profile.user_id);
         if (member) {
-            let nextLevel = (10+profile.level)*10*profile.level*profile.level;
-            let percentage = Math.floor(profile.experience/nextLevel*100);
-            topEmbed.addField(`#${ place++ } ${ member.displayName }`, i18next.t('top.voiceLevelRow', { 
+          let nextLevel = (10 + profile.level) * 10 * profile.level * profile.level;
+          let percentage = Math.floor(profile.experience / nextLevel * 100);
+          topEmbed.addFields({
+            name: `#${place++} ${member.displayName}`, value: i18next.t('top.voiceLevelRow', {
               level: profile.level,
               experience: profile.experience,
               percentage: percentage,
-            }));
+            })
+          });
         }
         return place > 5;
       });
     }
 
     if (subCommand == "voice-time") {
-      data = await profiles.timeTop(interaction.guild.id)
+      data = await profiles.timeTop(interaction.guild.id);
       topEmbed.setTitle(i18next.t("top.voiceTime"));
       let place = 1;
       data.some((profile) => {
         let member = interaction.guild.members.cache.get(profile.user_id);
         if (member) {
-            let totalSeconds = profile.timespent.global ?? 0;
-            let days = Math.floor(totalSeconds / (3600 * 24));
-            totalSeconds %= 60 * 60 * 24;
-            let hours = (`0` + (Math.floor(totalSeconds / 3600))).slice(-2);
-            totalSeconds %= 3600;
-            let minutes = (`0` + (Math.floor(totalSeconds / 60))).slice(-2);
-            let seconds = (`0` + (totalSeconds % 60)).slice(-2);
-            
-            let timeString = i18next.t('time.format', {days, hours, minutes, seconds});
-            topEmbed.addField(`#${ place++ } ${ member.displayName  }`, i18next.t('top.voiceTimeRow', {timeString}));            
+          let totalSeconds = profile.timespent.global ?? 0;
+          let days = Math.floor(totalSeconds / (3600 * 24));
+          totalSeconds %= 60 * 60 * 24;
+          let hours = (`0` + (Math.floor(totalSeconds / 3600))).slice(-2);
+          totalSeconds %= 3600;
+          let minutes = (`0` + (Math.floor(totalSeconds / 60))).slice(-2);
+          let seconds = (`0` + (totalSeconds % 60)).slice(-2);
+
+          let timeString = i18next.t('time.format', { days, hours, minutes, seconds });
+          topEmbed.addFields({ name: `#${place++} ${member.displayName}`, value: i18next.t('top.voiceTimeRow', { timeString }) });
         }
-        return place > 5;
+        return place > 20;
       });
     }
 
@@ -71,13 +81,75 @@ module.exports = {
       data.some((profile) => {
         let member = interaction.guild.members.cache.get(profile.user_id);
         if (member) {
-          topEmbed.addField(`#${ place++ } ${member.displayName}`,  i18next.t('top.voicepointsRow', { voicepoints: profile.voicepoints }));
+          topEmbed.addFields({
+            name: `#${place++} ${member.displayName}`,
+            value: i18next.t('top.voicepointsRow', { voicepoints: profile.voicepoints })
+          });
         }
         return place > 5;
-      });      
+      });
     }
+
+    if (subCommand == "connected") {
+      members = (await interaction.guild.members.fetch()).map(member => {
+        if (member.user.id == "281478128629579776") {
+          member.joinedTimestamp = momentRandom(1646161203000, 1488394803000).toDate().getTime();
+        }
+        return member;
+      });
+
+      members = members.sort((a, b) => {
+        return a.joinedTimestamp - b.joinedTimestamp
+      });
+
+      let place = 1;
+      let pageItemCount = 1;
+      let pages = [];
+      let connectedTopEmbed = new EmbedBuilder()
+        .setColor(process.env.EMBED_PRIMARY_COLOR)
+        .setTitle(i18next.t("top.connected"));
+
+      members.forEach((member) => {
+        connectedTopEmbed.addFields({
+          name: `#${place++} ${member.displayName}`,
+          value: i18next.t('top.joinedAt', { joinedDate: moment(member.joinedTimestamp).format('DD-MM-YYYY HH:mm') })
+        });
+        pageItemCount++;
+
+        if (pageItemCount > 10 || place > members.size) {
+          pageItemCount = 1;
+          pages.push(connectedTopEmbed);
+          connectedTopEmbed = new EmbedBuilder()
+            .setColor(process.env.EMBED_PRIMARY_COLOR)
+            .setTitle(i18next.t("top.connected"));
+        }
+      });
+
+      return paginationEmbed(interaction, pages, Infinity, true);
+    }
+
+    if (subCommand == "pray-total") {
+      data = (await profiles.prayStreakTop(interaction.guild.id)).sort((a, b) => {
+        return b.pray.total - a.pray.total;
+      });
+      topEmbed.setTitle(i18next.t("top.prayStreak"));
+      let place = 1;
+      data.some((profile) => {
+        let member = interaction.guild.members.cache.get(profile.user_id);
+        if (member) {
+          topEmbed.addFields({
+            name: `#${place++} ${member.displayName}`,
+            value: i18next.t('top.prayTotalRow', { prayTotal: profile.pray.total })
+          });
+        }
+        return place > 10;
+      });
+
+    }
+
+
     interaction.reply({
-      embeds: [topEmbed]
+      embeds: [ topEmbed ]
     });
   },
 };

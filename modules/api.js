@@ -101,13 +101,17 @@ profiles = {
         const top = await api.get(`/profile/${guild_id}/top`, { params: { by: "points", amount: 0 } });
         return top.data ?? [];
     },
+
+    prayStreakTop: async (guild_id) => {
+        const top = await api.get(`/profile/${guild_id}/top`, { params: { by: "pray-streak", amount: 0 } });
+        return top.data ?? [];
+    },
     
     transaction: (params) => {
         api.post('transaction', params).then(response => {
             // console.log(response.data);
         }).catch(error => {
-            error(error);
-            // console.log(error.response);
+            console.log(error.response.data);
         });
     },
 }
