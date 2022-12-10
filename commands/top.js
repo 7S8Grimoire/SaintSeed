@@ -108,15 +108,14 @@ module.exports = {
       let connectedTopEmbed = new EmbedBuilder()
         .setColor(process.env.EMBED_PRIMARY_COLOR)
         .setTitle(i18next.t("top.connected"));
-
+      
       members.forEach((member) => {
         connectedTopEmbed.addFields({
           name: `#${place++} ${member.displayName}`,
           value: i18next.t('top.joinedAt', { joinedDate: moment(member.joinedTimestamp).format('DD-MM-YYYY HH:mm') })
         });
-        pageItemCount++;
-
-        if (pageItemCount > 10 || place > members.size) {
+        pageItemCount++;        
+        if (pageItemCount > 10 || place > members.length) {
           pageItemCount = 1;
           pages.push(connectedTopEmbed);
           connectedTopEmbed = new EmbedBuilder()
@@ -125,7 +124,7 @@ module.exports = {
         }
       });
 
-      return paginationEmbed(interaction, pages, Infinity, true);
+      return paginationEmbed(interaction, pages, 2 * 60 * 1000, true);
     }
 
     if (subCommand == "pray-total") {

@@ -1,5 +1,6 @@
 {
   "development": {
+    "logging": false,
     "use_env_variable": "DB_URL",
     "dialect": "mysql",
     "define": {

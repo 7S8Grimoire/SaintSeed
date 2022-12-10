@@ -148,7 +148,7 @@ async function list(interaction, profile) {
     embeds.push(embed);
   });
   
-  return paginationEmbed(interaction, embeds, Infinity);
+  return paginationEmbed(interaction, embeds, 60 * 1000);
 }
 
 async function register(interaction, profile) {

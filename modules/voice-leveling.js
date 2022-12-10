@@ -22,8 +22,9 @@ async function tickGuild(guild) {
   let vRooms = await database.VoiceRoom.findAll({ where: { guild_id: guild.id } });
 
   let profileTree = await profiles.showGuildTree(guild.id);
-
-  vRooms.forEach((vRoom) => tickVoiceRoom(currentGuild, vRoom, profileTree));
+  if (profileTree) {
+    vRooms.forEach((vRoom) => tickVoiceRoom(currentGuild, vRoom, profileTree));
+  }
 }
 
 function tickVoiceRoom(currentGuild, vRoom, profileTree) {
