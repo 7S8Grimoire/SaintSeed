@@ -17,6 +17,8 @@ export const profiles = {
             .then(({ data }) => {
                 profile = data;
                 profile.isNew = true;
+            }).catch(error => {
+                console.error(error);                
             });
     
         return profile;
@@ -34,6 +36,8 @@ export const profiles = {
         await api.patch(`/profile/${guild_id}/${user_id}`, data)
             .then(({ data }) => {                
                 profile = data;                
+            }).catch(error => {
+                console.error(error);                
             });
         
         return profile;
@@ -77,7 +81,9 @@ export const profiles = {
         let data = {
             "experience": experience,        
         };
-        api.patch(`/profile/${guild_id}/${user_id}/add`, data);
+        api.patch(`/profile/${guild_id}/${user_id}/add`, data).catch(error => {
+            console.error(error);                
+        });;
     },
     
     add: (guild_id, user_id, data) => {        
@@ -88,24 +94,52 @@ export const profiles = {
         api.patch(`/profile/add`, data).catch(err => {});
     },
     
-    levelTop: async (guild_id) => {        
-        const top = await api.get(`/profile/${guild_id}/top`, { params: { by: "levels", amount: 0 } });
-        return top.data ?? [];
+    levelTop: async (guild_id) => {
+        let top = [];
+        await api.get(`/profile/${guild_id}/top`, { params: { by: "levels", amount: 0 } })
+            .then(({ data }) => {
+                top = data;
+            })
+            .catch(error => {
+                console.error(error);                
+            });
+        return top;
     },
     
     timeTop: async (guild_id) => {
-        const top = await api.get(`/profile/${guild_id}/top`, { params: { by: "time", amount: 0 } });
-        return top.data ?? [];
+        let top = [];
+        await api.get(`/profile/${guild_id}/top`, { params: { by: "time", amount: 0 } })
+        .then(({ data }) => {
+            top = data;
+        })
+        .catch(error => {
+            console.error(error);                
+        });
+        return top;
     },
     
-    pointsTop: async (guild_id) => {        
-        const top = await api.get(`/profile/${guild_id}/top`, { params: { by: "points", amount: 0 } });
-        return top.data ?? [];
+    pointsTop: async (guild_id) => {
+        let top = [];
+        await api.get(`/profile/${guild_id}/top`, { params: { by: "points", amount: 0 } })
+        .then(({ data }) => {
+            top = data;
+        })
+        .catch(error => {
+            console.error(error);                
+        });
+        return top;        
     },
 
     prayStreakTop: async (guild_id) => {
-        const top = await api.get(`/profile/${guild_id}/top`, { params: { by: "pray-streak", amount: 0 } });
-        return top.data ?? [];
+        let top = [];
+        await api.get(`/profile/${guild_id}/top`, { params: { by: "pray-streak", amount: 0 } })
+        .then(({ data }) => {
+            top = data;
+        })
+        .catch(error => {
+            console.error(error);                
+        });
+        return top;        
     },
     
     transaction: (params) => {

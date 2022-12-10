@@ -1,11 +1,12 @@
-import { CommandInteraction, RESTPostAPIChatInputApplicationCommandsJSONBody } from "discord.js"
+import { ChatInputCommandInteraction, CommandInteraction, RESTPostAPIChatInputApplicationCommandsJSONBody } from "discord.js"
 
-export interface Command {
+export interface Command {  
+  categories?:  string[],
   data: RESTPostAPIChatInputApplicationCommandsJSONBody  
-  execute(interaction: CommandInteraction): any
+  execute(interaction: ChatInputCommandInteraction): any
 }
 
-export interface ApiAddData {
+export interface ApiAddData {  
   user_id?: string,
   guild_id?: string,
   level?: number,

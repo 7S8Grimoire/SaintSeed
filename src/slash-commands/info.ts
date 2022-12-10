@@ -50,7 +50,7 @@ export default {
         const avatar = await Canvas.loadImage(member.displayAvatarURL({ extension: 'png' }));
         const nameHeightOffset = 270;
         
-        // Create bacground with gradient        
+        // Create background with gradient        
         let gradient = context.createRadialGradient(width / 2, 0, 0, width / 2, 0, width);
         gradient.addColorStop(0, "#6f7278");
         gradient.addColorStop(1, backgroundColor);
@@ -71,7 +71,7 @@ export default {
         let nextVoiceLevelExperience = (10 + profile.level) * 10 * profile.level * profile.level;
         let voiceProgress = profile.experience/nextVoiceLevelExperience*100;
         // voiceProgress = 67;
-            // Draw progress bacground circle
+            // Draw progress background circle
         context.beginPath();
         context.lineWidth = 12;
         context.arc(width / 2, nameHeightOffset + 100, 50, 0, 2 * Math.PI);
@@ -111,7 +111,7 @@ export default {
         let nextTextLevelExperience = (profile.text.level*(profile.text.level/2+0.5))*10;
         let textProgress = profile.text.experience/nextTextLevelExperience*100;
         // textProgress = 33;
-            // Draw progress bacground circle
+            // Draw progress background circle
         context.beginPath();
         context.lineWidth = 12;
         context.arc(width / 2, nameHeightOffset + 220, 50, 0, 2 * Math.PI);

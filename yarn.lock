@@ -1035,7 +1035,7 @@ mkdirp@^1.0.3:
 
 moment-random@^1.1.0:
   version "1.1.0"
-  resolved "https://registry.npmjs.org/moment-random/-/moment-random-1.1.0.tgz"
+  resolved "https://registry.yarnpkg.com/moment-random/-/moment-random-1.1.0.tgz#4e82842f699d9ec606a662394cf39507b9c09739"
   integrity sha512-BKHOzlsNZ5H30SZWynnhXhwTgEwbhdKdeBGeOn7WTaMhIq4kzbJR7B2yL2ECiu21x7jPstdF57flfqkJ0Bql8A==
 
 moment-timezone@^0.5.34:

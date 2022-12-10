@@ -36,7 +36,7 @@ export function findCommand(commandName: string) {
 
 export async function executeCommand(interaction: Interaction<CacheType>) {
   /* Check is interaction - command */
-  if (!interaction.isCommand()) return;    
+  if (!interaction.isChatInputCommand()) return;    
     
   const command = findCommand(interaction.commandName);
 

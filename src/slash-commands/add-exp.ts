@@ -1,5 +1,6 @@
-const { SlashCommandBuilder, PermissionFlagsBits, EmbedBuilder } = require('discord.js');
-const i18next = require('i18next');
+import { profiles } from './../modules/api';
+import { SlashCommandBuilder, PermissionFlagsBits, EmbedBuilder } from 'discord.js';
+import i18next from 'i18next';
 
 module.exports = {	
 	categories: ["command_spam", "roulette"],
