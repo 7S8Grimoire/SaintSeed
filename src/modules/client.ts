@@ -1,5 +1,8 @@
-import { Client, GatewayIntentBits, REST, Routes } from "discord.js";
-import { findCommand, loadCommands } from "./commands";
+import { Client, Events, GatewayIntentBits, REST, Routes } from "discord.js";
+import { executeCommand, loadCommands } from "./commands";
+import { initLogger } from "./logger";
+import { processTextLevelingMessage } from "./text-leveling";
+import { executeVoiceLeveling } from "./voice-leveling";
 
 const client = new Client({ 
     intents: [
@@ -13,34 +16,20 @@ const client = new Client({
     ]
 });
 
-client.once('ready', () => {
+client.once(Events.ClientReady, () => {
     console.log(`${client.user.tag} has logged in successfully!`);
     console.log(`Ready to serve on ${client.guilds.cache.size} servers, for ${client.users.cache.size} users.`);
     loadCommands();
+    executeVoiceLeveling();
+    initLogger();
 });
 
-client.on("interactionCreate", async (interaction) => {
-    /* Check is interaction - command */
-    if (!interaction.isCommand()) return;    
-    
-    const command = findCommand(interaction.commandName);
+client.on(Events.InteractionCreate, async (interaction) => {
+    executeCommand(interaction);
+});
 
-    if (command) {
-        try {
-            await command.execute(interaction);
-        } catch (error) {
-            console.error(error);
-            await interaction.reply({
-                content: "There was an error while executing this command!",
-                ephemeral: true,                
-            })
-        }
-    } else {
-        await interaction.reply({
-            content: "Command not found",
-            ephemeral: true,
-        });
-    }
+client.on(Events.MessageCreate, async (message) => {
+    processTextLevelingMessage(message);
 });
 
 export default client;

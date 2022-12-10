@@ -1,8 +1,8 @@
-import { Routes } from 'discord.js';
+import { CacheType, Interaction, Routes } from 'discord.js';
 import { Command } from './../types/index.d';
 import glob from "glob" // included by discord.js
 import { promisify } from "util" // Included by default
-import { REST, RESTPostAPIChatInputApplicationCommandsJSONBody } from 'discord.js';
+import { REST } from 'discord.js';
 import client from './client';
 
 // Make `glob` return a promise
@@ -32,4 +32,28 @@ export async function loadCommands() {
 export function findCommand(commandName: string) {
     const command = commands.find(command => command.data.name === commandName);
     return command;
+}
+
+export async function executeCommand(interaction: Interaction<CacheType>) {
+  /* Check is interaction - command */
+  if (!interaction.isCommand()) return;    
+    
+  const command = findCommand(interaction.commandName);
+
+  if (command) {
+      try {
+          await command.execute(interaction);
+      } catch (error) {
+          console.error(error);
+          await interaction.reply({
+              content: "There was an error while executing this command!",
+              ephemeral: true,                
+          })
+      }
+  } else {
+      await interaction.reply({
+          content: "Command not found",
+          ephemeral: true,
+      });
+  }
 }
