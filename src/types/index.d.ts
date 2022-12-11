@@ -1,6 +1,10 @@
 import { ChatInputCommandInteraction, CommandInteraction, RESTPostAPIChatInputApplicationCommandsJSONBody } from "discord.js"
 
 export interface Command {  
+  disabled?: boolean,
+  guilds_white_list?: string[],
+  powerlist?: string[],
+  permissions?: PermissionFlagsBits[],
   categories?:  string[],
   data: RESTPostAPIChatInputApplicationCommandsJSONBody  
   execute(interaction: ChatInputCommandInteraction): any

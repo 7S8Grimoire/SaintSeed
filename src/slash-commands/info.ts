@@ -5,7 +5,8 @@ import i18next from 'i18next';
 import Canvas from 'canvas';
 import moment from 'moment';
 
-export default {    
+export default {
+    categories: ["command_spam", "roulette"],
 	data: new SlashCommandBuilder()
 		.setName('info')
 		.setDescription('Get user info')

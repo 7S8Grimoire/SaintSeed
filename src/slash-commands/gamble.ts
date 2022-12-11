@@ -14,7 +14,7 @@ import moment from "moment";
 import Chance from "chance";
 
 export default {
-  // categories: ["roulette"],
+  categories: ["roulette"],
   data: new SlashCommandBuilder()
     .setName("gamble")
     .setDescription("It's time to gamble")
