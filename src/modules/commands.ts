@@ -39,7 +39,8 @@ export async function loadCommands() {
 				console.log(
 					`Successfully registered application commands (${commands.length}) for guild ${guild.name} (${guild.id}).`
 				);
-			});
+			})
+      .catch(console.error);
 	});
 }
 
