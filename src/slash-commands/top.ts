@@ -127,7 +127,7 @@ export default {
         }
       });
 
-      return paginationEmbed(interaction, pages, Infinity, true);
+      return paginationEmbed(interaction, pages, 3 * 60 * 1000, true);
     }
 
     if (subCommand == "pray-total") {

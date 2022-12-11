@@ -4,8 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node ./index.js",
     "dev": "nodemon ./src/index.ts",
+    "start": "node dist",
+    "build": "rm -rf dist && tsc",
     "migrate": "env $(cat .env | grep -v ^# | xargs) sequelize db:migrate"
   },
   "keywords": [],

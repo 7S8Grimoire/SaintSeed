@@ -64,7 +64,7 @@ export async function paginationEmbed (
   const collector = await curPage.createMessageComponentCollector({
     componentType: ComponentType.Button,
     filter,
-    // time: timeout,      
+    time: timeout,
   });
 
   collector.on("collect", async (i) => {

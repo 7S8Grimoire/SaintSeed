@@ -1,8 +1,9 @@
+import { Command } from './../types/index.d';
 import { profiles } from './../modules/api';
 import { SlashCommandBuilder, PermissionFlagsBits, EmbedBuilder } from 'discord.js';
 import i18next from 'i18next';
 
-module.exports = {	
+export default {
 	categories: ["command_spam", "roulette"],
   permissions: [ PermissionFlagsBits.Administrator ],
 	data: new SlashCommandBuilder()
@@ -17,7 +18,8 @@ module.exports = {
       .setName('exp')
       .setDescription('how many exp?')
       .setRequired(true)
-    ),
+    )
+    .toJSON(),
 	async execute(interaction) {
     const exp = interaction.options.getInteger('exp');
     const user = interaction.options.getUser('user');    
@@ -37,4 +39,4 @@ module.exports = {
       embeds: [ embed ],
     });
 	},
-};
+} as Command;
