@@ -1,35 +1,231 @@
 [
-  "Диван",
-  "Диверсия",
-  "Диабет",
-  "Дилетант",
-  "Динозавр",
-  "Династия",
-  "Дифференциал",
-  "Диагноз",
-  "Диплом",
-  "Динамит",
-  "ДИО",  
-  "Динамик",
-  "Дизель",
-  "Дибил",
-  "Диктофон",
-  "Диктор",
-  "Директор",
-  "Дитя",
-  "Диалог",
-  "Диаметр",
-  "Дирижер",
-  "Дистрибуция",
-  "Димократ",
-  "Дименции",
-  "Дизайн",
-  "Дименсия",
-  "Динатриус",
-  "Дино-Эпл-Лупс",
+  {
+    "value": "Диван",
+    "gifs": [
+      "https://media.tenor.com/6QZeakltBHUAAAAC/sofa-furniture.gif",
+      "https://media.tenor.com/VQm9N6hmtusAAAAd/fomahome-sofabed-sofa-bed.gif"
+    ]
+  },
+  {
+    "value": "Диверсия",
+    "gifs": [
+      "https://media.tenor.com/dYfvvNdwM2cAAAAi/wth-smile.gif",
+      "https://media.tenor.com/jx6Hu-f-ZiwAAAAd/troll-face-smiley-face.gif"
+    ]
+  },  
+  {
+    "value": "Диабет",
+    "gifs": [
+      "https://media.tenor.com/35YfXBtxHZgAAAAi/dog-perro.gif",
+      "https://media.tenor.com/MuBZ-MrSGiMAAAAC/diabeetus-diabetes.gif"
+    ]
+  },  
+  {
+    "value": "Дискета",
+    "gifs": [
+      "https://media.tenor.com/UUz3lMhJbcwAAAAM/floppy-disk-3d.gif",
+      "https://media.tenor.com/pWl7kJNurEwAAAAM/floppy-disk-black-woman.gif",
+      "https://media.tenor.com/jwd5KUr5QzcAAAAM/anime-diskette.gif"
+    ]
+  },
+  {
+    "value": "Дилетант",
+    "gifs": [
+      "https://media.tenor.com/mXEf41JRzkQAAAAM/%D0%B1%D0%B5%D0%B7%D0%B4%D0%B0%D1%80%D1%8C-%D0%B1%D0%B5%D0%B7%D0%B4%D0%B0%D1%80%D0%BD%D0%BE%D1%81%D1%82%D1%8C.gif",
+      "https://yt3.googleusercontent.com/ytc/AMLnZu-UTmGFqyj8kpVGevhnKVfniY6VIg4vJbG3EVWnIA=s176-c-k-c0x00ffffff-no-rj-mo"
+    ]
+  },
+  {
+    "value": "Динозавр",
+    "gifs": [
+      "https://media.tenor.com/6RlWL6d6uzEAAAAM/dinosaur-jurassic-park.gif",
+      "https://media.tenor.com/3XqvG5h8StsAAAAM/dinosaur-t-rex.gif"           
+    ]
+  },
+  {
+    "value": "Династия",
+    "gifs": [
+      "https://tenor.com/view/ponasenkov-%D0%BF%D0%BE%D0%BD%D0%B0%D1%81%D0%B5%D0%BD%D0%BA%D0%BE%D0%B2-%D0%BA%D1%80%D1%83%D1%82%D0%B8%D1%82%D1%81%D1%8F-kmza-gif-23502971",
+      "https://media.tenor.com/i5EX0AerD70AAAAM/dinastia-imp%C3%A9rio.gif"           
+    ]
+  },
+  {
+    "value": "Дифференциал",
+    "gifs": [
+      "https://media.tenor.com/wyosCrY_q2gAAAAM/keown-tutoring.gif",
+      "https://media.tenor.com/XPx9FAQtdMIAAAAM/geometric.gif"           
+    ]
+  },
+  {
+    "value": "Диагноз",
+    "gifs": [
+      "https://media.tenor.com/wMFOzCKEr-kAAAAM/suisei-skill-issue.gif",
+      "https://media.tenor.com/uGN34orccIEAAAAM/skillissue-skill.gif",
+      "https://media.tenor.com/6QZtWQw9-IUAAAAM/skull-issue-skill-issue.gif"      
+    ]
+  },
+  {
+    "value": "Диплом",
+    "gifs": [
+      "https://media.tenor.com/kI-zdytBkWMAAAAC/congrats-grad-graduation.gif",
+      "https://media.tenor.com/lIhdIzZ36esAAAAM/diploma.gif"      
+    ]
+  },
+  {
+    "value": "Динамит",
+    "gifs": [
+      "https://media.tenor.com/7qi3dwa96KUAAAAM/bomb-tnt.gif",
+      "https://media.tenor.com/CKj8eTSqebwAAAAj/tnt-minecraft.gif"      
+    ]
+  },
+  {
+    "value": "ДИО",
+    "gifs": [
+      "https://media.tenor.com/hUvWVhsuhrQAAAAM/dio-brando-dio.gif",
+      "https://media.tenor.com/anv603rq5DgAAAAM/dio-the-world-appear.gif"      
+    ]
+  },
+  {
+    "value": "Динамик",
+    "gifs": [
+      "https://media.tenor.com/vWbLhculQY0AAAAM/party-mix.gif",
+      "https://media.tenor.com/6RLLzjciZxgAAAAM/speaker-music.gif"      
+    ]
+  },
+  {
+    "value": "Дизель",
+    "gifs": [
+      "https://media.tenor.com/iF-Idg6BgbwAAAAM/truck-smoke.gif",
+      "https://media.tenor.com/iF-Idg6BgbwAAAAM/truck-smoke.gif",
+      "https://cdn.discordapp.com/attachments/820227819962761256/1054212610008035398/BoldandBrave54.webp"
+    ]
+  },
+  {
+    "value": "Дибил",
+    "gifs": [
+      "https://media.tenor.com/y3Xsyngvs_EAAAAM/retardad-moron.gif",
+      "https://media.tenor.com/jZrtNALqcD4AAAAj/2021-human.gif"
+    ]
+  },
+  {
+    "value": "Диктофон",
+    "gifs": [
+      "https://media.tenor.com/56HGjhOk2uAAAAAM/ted-danson-the-good-place.gifhttps://media.tenor.com/UBDLTMhiO6MAAAAM/cassette-player-tape.gif",
+      "https://media.tenor.com/UBDLTMhiO6MAAAAM/cassette-player-tape.gif"
+    ]
+  },
+  {
+    "value": "Диктор",
+    "gifs": [
+      "https://media.tenor.com/J1M-GKz-RCcAAAAM/inazuma-eleven-go-galaxy-inago-galaxy.gifhttps://media.tenor.com/xXwuDsZabPYAAAAM/cute-so.gif",
+      "https://media.tenor.com/xXwuDsZabPYAAAAM/cute-so.gif"
+    ]
+  },
+  {
+    "value": "Директор",
+    "gifs": [
+      "https://media.tenor.com/MYt8aZbth3UAAAAM/edcord.gif",
+      "https://media.tenor.com/y-_fQAgzVpIAAAAM/the-office-michael-scott.gif"
+    ]
+  },
+  {
+    "value": "Дитя",
+    "gifs": [
+      "https://media.tenor.com/jgVeADIWX8wAAAAM/theodore-seville.gif/",
+      "https://media.tenor.com/0v6Ir6SNtwIAAAAM/ah-kid-peanut-butter-baby.gif"
+    ]
+  },
+  {
+    "value": "Диалог",
+    "gifs": [
+      "https://media.tenor.com/_-DDl_EkT_QAAAAM/hello-hi.gif",
+      "https://media.tenor.com/jeVg5pqXj7UAAAAM/%D0%B4%D0%B8%D0%B0%D0%BB%D0%BE%D0%B3%D0%BC%D0%B5%D0%B6%D0%B4%D1%83%D0%B4%D0%B2%D1%83%D0%BC%D1%8F%D0%B3%D0%B5%D0%BD%D0%B8%D1%8F%D0%BC%D0%B8-%D0%B4%D0%B8%D0%B0%D0%BB%D0%BE%D0%B3%D0%B4%D0%B2%D1%83%D1%85%D0%B3%D0%B5%D0%BD%D0%B8%D0%B5%D0%B2.gif"
+    ]
+  },
+  {
+    "value": "Дирижер",
+    "gifs": [
+      "https://media.tenor.com/LX2NPxgJIMoAAAAM/tom-and-jerry-orchestra.gif",
+      "https://media.tenor.com/JytfjO4CiPQAAAAM/de-funes-direttore-orchestra.gif"
+    ]
+  },
+  {
+    "value": "Дистрибуция",
+    "gifs": [
+      "https://media.tenor.com/6r9wkiNp6B8AAAAM/redistribution.gif",
+      "https://media.tenor.com/9RJxjut6vqoAAAAM/money-distribution-pana-pattuvada.gif"
+    ]
+  },
+  {
+    "value": "Димократ",
+    "gifs": [
+      "https://media.tenor.com/ETZqq3flG4IAAAAM/vote-simpsons.gif",
+      "https://media.tenor.com/pQ5EwxSnLM8AAAAM/flag-waving-democrat.gif"
+    ]
+  },
+  {
+    "value": "Дименсия",
+    "gifs": [
+      "https://media.tenor.com/-4SjAqVi_AsAAAAM/design-is-art-for-losers-designers.gif",
+      "https://media.tenor.com/ZxzHpbmQ7w0AAAAM/website-website-designing.gif"
+    ]
+  },
+  {
+    "value": "Дименсия",
+    "gifs": [
+      "https://media.tenor.com/NKtwkfc1IMcAAAAM/alzheimers-alostman.gif",
+      "https://media.tenor.com/hdEL0uNj1Z4AAAAM/diavolo-requiem.gif",
+      "https://media.tenor.com/46mp4uqmQhkAAAAM/dementia-alz.gif"
+    ]
+  },
+  {
+    "value": "Динатриус",
+    "gifs": [
+      "https://media.tenor.com/VTCZMrpZ_a0AAAAM/wow4-warcraft.gif",
+      "https://media.tenor.com/-aXMIk9WEzIAAAAM/denathrius-sire-denathrius.gif"
+    ]
+  },
+  {
+    "value": "Дино-Эпл-Лупс",
+    "gifs": [
+      "https://media.tenor.com/22kxnoLWkR0AAAAM/matvey-giperpops.gif",
+      "https://media.tenor.com/BqcGDudjIL8AAAAM/i-loveyou-baby.gif"
+    ]
+  },
   "Дифтерия",
-  "Диаметр",
-  "Дигтрио",
-  "Дирижабль",
-  "Дитя солнца"
+  {
+    "value": "Диаметр",
+    "gifs": [
+      "https://media.tenor.com/FyagLbeim7sAAAAM/matematica-rio-professor-procopio.gif",
+      "https://media.tenor.com/sB6YqeJTynkAAAAM/circunfer%C3%AAncia.gif"
+    ]
+  },
+  {
+    "value": "Дигтрио",
+    "gifs": [
+      "https://media.tenor.com/TO5ZPymHtvMAAAAM/dugtrio-pokemon.gif",
+      "https://media.tenor.com/jQVquc_t1-kAAAAj/dugtrio-pokemon.gif"
+    ]
+  },
+  {
+    "value": "Диглет",
+    "gifs": [
+      "https://media.tenor.com/JhAzIV-twxEAAAAM/yes-arabic.gif",
+      "https://media.tenor.com/wuw4q53RMPQAAAAM/pokemon-diglett.gif"
+    ]
+  },
+  {
+    "value": "Дирижабль",
+    "gifs": [
+      "https://media.tenor.com/uLTccAqP3zEAAAAM/kikis-delivery-service-ghibli.gif",
+      "https://media.tenor.com/ouDLIztheakAAAAM/airship-pusheen-ffxivpusheen.gifhttps://media.tenor.com/uLTccAqP3zEAAAAM/kikis-delivery-service-ghibli.gif"
+    ]
+  },
+  {
+    "value": "Дитя солнца",
+    "gifs": [
+      "https://media.tenor.com/M54fCAJR3uIAAAAj/pray-the.gif",
+      "https://media.tenor.com/ISauQmM3r70AAAAM/cool-pog.gif"
+    ]
+  }
 ]
