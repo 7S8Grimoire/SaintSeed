@@ -1,0 +1,100 @@
+{
+  "translation": {
+    "ping": "Боинго и оинго",
+    
+    "pray": {
+      "success": "Держи {{pray}} и {{streak}} за ежедневные молитвы!",
+      "alreadyGot": "Ты сегодня уже получил своё!",
+      "cantHearYou": "Не слышу тебя"
+    },
+
+    "guild": {
+      "registered": {
+        "success": "Сервер успешно зарегистрирован!",
+        "already": "Сервер уже зарегистрирован!"
+      },
+
+      "textChannel": {
+        "registered": "Текстовому каналу присвоена категория **{{category}}**",
+        "removed":  "Текстовый канал убран из категории **{{category}}**"
+      }
+    },
+
+    "commands": {
+      "incorrectCategoryChannel": "Не-не мимо... иди сюда: {{channels}}",
+      "incorrectCategoryChannelOr": "или",
+      "noPermissions": "У тебя нет прав, плебей..."
+    },
+
+    "level": {
+      "up": "<@{{who}}> достиг {{level}} уровня!"
+    },
+
+    "dice": {
+      "opponentBot": "Найди себе живого друга...",
+      "opponentSelf": "Ты выиграл!! И проиграл...",
+      "betMin": "Меньше 0 не надо...",
+      "betVoicePointsNotEnough": "У тебя денег нет. В наличии {{voicepoints}} VP",
+      "duelVoicePointsNotEnough": "У <@{{user}}> не хватило денюшек...",
+      "embedTitle": "Предложение сыграть в кости",
+      "embedDescription": "<@{{from}}> предлагает сыграть в кости <@{{to}}>",
+      "timeOut": "Время на принятие игры истекло :(",
+      "resultsTitle": "Результаты игры в кости",
+      "bet": "ставка",
+      "draw": "Ничья",
+      "winner": "Победил <@{{winner}}>",
+      "result": "Результат"
+    },
+
+    "vRoom": {
+      "created": "Комната успешно зарегистрирована в системе!",
+      "updated": "Комната успешно обновлена!",
+      "deleted": "комната успешно убрана из системы!",
+      "visitorCount": "Кол-во посетителей",
+      "xpPerTick": "Опыт",
+      "notPartOfSystem": "Не является частью системы",
+      "listTitle": "Список комнат",
+      "listEmpty": "Список комнат пустой..."
+    },
+
+    "give": {
+      "min": "Если даёшь, то дай...",
+      "voicePointsNotEnough": "Денег нет. В наличии {{voicepoints}} VP",
+      "self": "Из левого кармана взял, в правый положил. Успешно!!!",
+      "success": "<@{{userTo}}> получил {{voicepoints}} VP от <@{{userFrom}}>"
+    },
+
+    "vRole": {
+      "created": "Роль успешно зарегистрирована в системе!",
+      "updated": "Роль успешно обновлена!",
+      "deleted": "Роль успешно убрана из системы!",
+      "listEmpty": "Список ролей пустой..."
+    },
+
+    "pagination": {
+      "next": "▶️",
+      "prev": "◀️"
+    },
+
+    "time": {
+      "format": "{{days}}д. {{hours}}:{{minutes}}:{{seconds}}"
+    },
+
+    "top": {
+      "voiceTimeRow": "Просидел: {{timeString}}",
+      "voiceLevelRow": "Уровень {{level}} ({{experience}} XP) ({{percentage}}%)",
+      "voicepointsRow": "{{voicepoints}} VP",
+      "prayTotalRow": "{{prayTotal}} prays total",
+      "joinedAt": "Присоединился к нам {{joinedDate}}",
+      "connected": "Топ импортированных на сервер",
+      "voiceLevel": "Топ 5 фармил",
+      "voiceTime": "Топ 20 просидевших штаны",
+      "voicepoints": "Топ 5 моржей",
+      "prayStreak": "Топ молящих о помощи"
+    },
+
+    "profile": {
+      "infoTitle": "User {{name}} - full info"
+    }
+  }
+}
