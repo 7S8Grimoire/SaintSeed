@@ -1,6 +1,13 @@
-import { Events, AuditLogEvent, codeBlock, bold, Client } from "discord.js";
+import {
+	Events,
+	AuditLogEvent,
+	codeBlock,
+	bold,
+	Client,
+	spoiler,
+} from "discord.js";
+import { formatBytes } from "../helpers";
 import client from "./client";
-
 
 export function initLogger() {
 	/* Message delete */
@@ -10,7 +17,15 @@ export function initLogger() {
 		if (message.guild.id != process.env.LOGGING_SERVER) return;
 		if (message.author.bot || message.author.system) return;
 
-		const deletedContent = codeBlock("diff", `-${message.content}`);
+		let deletedContent = codeBlock("diff", `-${message.content}`);
+		if (message.attachments.size) {
+			let deletedAttachments = message.attachments.map((attachment) => {
+				return `${attachment.name} 
+					- ${spoiler(attachment.url)}
+					- (${formatBytes(attachment.size, 2)}) (${attachment.contentType})`;
+			});
+			deletedContent += deletedAttachments.join("\n");
+		}
 		const channel = message.guild.channels.cache.get(
 			process.env.LOGGING_CHANNEL
 		);
